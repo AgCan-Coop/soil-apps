@@ -1,0 +1,224 @@
+/*
+Basemap controls
+*/
+
+.map {
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+}
+
+.ol-scale-line {
+    background: none;
+}
+
+.ol-scale-line-inner {
+    color: #404040;
+    border-color: #404040;
+}
+
+
+/*  
+Sidebar menu buttons
+*/
+
+.sidemenu-top {
+    border-radius: 4px 0px 0px 4px;
+    margin-left: -44px !important;
+    position: fixed;
+    top: 3%;
+}
+
+.sidemenu-bottom {
+    border-radius: 4px 0px 0px 4px;
+    bottom: 3%;
+    margin-left: -44px !important;
+    position: fixed;
+}
+
+.ui.black.buttons .button,
+.ui.black.button {
+    background-color: #404040;
+}
+
+/*
+.ui.black.buttons .button:focus,
+.ui.black.button:focus {
+    background-color: #b30000;
+}
+
+.ui.black.buttons .button:focus:hover,
+.ui.black.button:focus:hover {
+    background-color: #990000;
+}
+*/
+
+.ui.black.buttons .button.clicked,
+.ui.black.button.clicked {
+    background-color: #b30000;
+}
+
+.ui.black.buttons .button.clicked:hover,
+.ui.black.button.clicked:hover {
+    background-color: #990000;
+}
+
+.sidemenu-bottom.ui.black.buttons .button:focus,
+.sidemenu-bottom.ui.black.button:focus {
+    background-color: #404040;
+}
+
+.sidemenu-bottom.ui.black.buttons .button:focus:hover,
+.sidemenu-bottom.ui.black.button:focus:hover {
+    background-color: #27292a;
+}
+
+.ui.vertical.buttons .button:first-child {
+    border-top-right-radius: 0;
+}
+
+.ui.vertical.buttons .button:last-child {
+    border-bottom-right-radius: 0;
+}
+
+.clicked {
+    background-color: #b30000;
+}
+
+
+/*
+Sidebar panel
+*/
+
+.sidebar-panel {
+    background-color: white;
+    color: #333;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/*
+Sidebar panel title and close icon
+*/
+
+.sidebar-panel-heading {
+    background-color: #f5f5f5;
+    border-bottom: solid #d9d9d9;
+    border-width: 1px;
+    height: 40px;
+    padding: 10px 15px 10px 15px;
+    position: relative;
+    width: 100%;
+}
+
+.sidebar-panel-title {
+    display: inline-block;
+    font-weight: 500;
+    line-height: 20px;
+    margin-bottom: 0px;
+}
+
+.sidebar-panel-icon {
+    box-shadow: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px 10px 15px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.remove.icon {
+    opacity: 0.45;
+}
+
+.sidebar-panel-icon:hover .remove.icon {
+    opacity: 1;
+}
+
+.sidebar-panel-icon .ui.basic.button {
+    box-shadow: 0px 0px 0px 0px;
+}
+
+
+/*
+Sidebar panel information body
+*/
+
+#sidebar,
+.ui.sidebar.right.overlay {
+    width: 27% !important;
+}
+
+.sidebar-panel-body {
+    background-color: white;
+    height: 100% !important;
+    padding: 10px 15px 10px 15px;
+    width: 100% !important;
+}
+
+.title-main {
+    display: inline-block;
+    font-weight: 700;
+}
+
+.title-sub {
+    display: inline-block;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+
+
+/*
+Small tweeks
+*/
+
+
+.span-attr {
+    padding-left: 20px;
+}
+
+.accordion-margin {
+    margin-top: 10px;
+}
+
+.form-buttons {
+    margin-bottom: 0px !important;
+}
+
+.upload {
+    position: relative;
+    overflow: hidden;
+}
+.upload input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+
+#options {
+    display: none;
+    margin-bottom: 14px;
+}
+
+#dataInfo {
+    text-align: center;
+}

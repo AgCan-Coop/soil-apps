@@ -1,0 +1,935 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>AgCan Soils Portal</title>
+
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="../lib/ol/v3.19.1-dist/ol.js" type="text/javascript"></script>
+<!--    <script src="https://openlayers.org/en/v4.0.1/build/ol.js" type="text/javascript"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" type="text/javascript"></script>
+    <script src="../css/Semantic-UI-CSS-master/semantic.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../lib/ol/v3.19.1-dist/ol.css" type="text/css">
+    <link rel="stylesheet" href="../css/Semantic-UI-CSS-master/semantic.css" type="text/css">
+    <link rel="stylesheet" href="../css/soil-data-portal.css" type="text/css">
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.3/proj4.js" type="text/javascript"></script> -->
+    <script src="../lib/proj4js/proj4.js"></script>
+    <script>window.onerror = function(e){alert("an error occured" + e);}</script>
+    <script src="../lib/shp2geo/jszip.js" type="text/javascript"></script>
+    <script src="../lib/shp2geo/jszip-utils.js" type="text/javascript"></script>    
+    <script src="../lib/shp2geo/preprocess.js" type="text/javascript"></script>
+    <script src="../lib/shp2geo/preview.js" type="text/javascript"></script>
+
+
+</head>
+
+<body>
+
+     <div id="sidebar" class="ui very wide right sidebar">
+        <div class="sidemenu-top ui fixed large black vertical icon buttons">
+            <button id="layer-options" class="open-panel ui button" data-content="Layer options" data-variation="mini inverted" data-position="left center"><i class="list layout icon"></i></button>
+            <button id="drawing-tools" class="open-panel ui button" data-content="Drawing tools" data-variation="mini inverted" data-position="left center"><i class="edit icon"></i></button>
+            <button id="upload-shapefile" class="open-panel ui button" data-content="Upload shapefile" data-variation="mini inverted" data-position="left center"><i class="upload icon"></i></button>
+            <button id="download-data" class="open-panel ui button" data-content="Download data" data-variation="mini inverted" data-position="left center"><i class="download icon"></i></button>
+            <button id="help" class="open-panel ui button" data-content="Help" data-variation="mini inverted" data-position="left center"><i class="help circle icon"></i></button>
+        </div>
+        <div class="sidemenu-bottom ui fixed large black vertical icon buttons">
+            <button id="zoom-in" class="ui button"><i class="plus icon"></i></button>
+            <button id="zoom-out" class="ui button"><i class="minus icon"></i></button>
+        </div>
+        <div class="sidebar-panel ui container"> 
+            
+            <!-- Layer selection -->
+            <div id="layer-options-panel" class="info-panel">
+                <div class="sidebar-panel-heading">
+                    <h4 class="sidebar-panel-title">
+                        <span>Layers</span>
+                    </h4>
+                    <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
+                </div>
+                <div class="sidebar-panel-body">                    
+                    <span class="title-main">Available Data Layers</span>                       
+                    <div id="layer-group-acc" class="accordion-margin ui styled accordion">
+                    </div>
+                    <span class="title-sub">Selected Layers</span>
+                    <div class="accordion-margin ui styled accordion">
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            Current Selection
+                        </div>
+                        <div class="content">
+                            <div id="selected-layer-list" class="selected-layers-list ui list">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Drawing Tools -->
+            <div id="drawing-tools-panel" class="drawing-tools-panel info-panel">
+                <div class="sidebar-panel-heading">
+                    <h4 class="sidebar-panel-title">
+                        <span>Drawing Tools</span>
+                    </h4>
+                    <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
+                </div>
+                <div class="sidebar-panel-body">
+                    <span class="title-main">Select area with drawing tools</span>
+                    <div class="ui segment">                                            
+                        <div id="drawing-dropdown" class="drawing-dropdown ui fluid selection dropdown">
+                            <input name="tools" value="None" type="hidden">
+                            <i class="dropdown icon"></i>
+                            <div class="default text" >None</div>
+                            <div class="menu">                                
+                                <div id="draw-box" class="draw-tool item" data-value="Box">
+                                    <i class="object ungroup icon"></i>
+                                    Box
+                                </div>                            
+                                <div id="draw-square" class="draw-tool item" data-value="Square">
+                                    <i class="square icon"></i>
+                                    Square
+                                </div>
+                                <div id="draw-polygon" class="draw-tool item" data-value="Point">
+                                    <i class="radio icon"></i>
+                                    Point
+                                </div>
+                                <div id="draw-polygon" class="draw-tool item" data-value="Polygon">
+                                    <i class="industry icon"></i>
+                                    Polygon
+                                </div>
+                                <div id="draw-none" class="draw-tool item" data-value="None">
+                                    - none -
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <h2 class="ui header">OR</h2>
+                    <span class="title-main">Select area with Coordinates</span>
+                    <div class="ui segment">
+                        <form class="bbox-form ui form">
+                            <div class="two fields">
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui label">
+                                            min-x
+                                        </div>
+                                        <input id="minX" placeholder="lower left x-axis" type="text">                                        
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui label">
+                                            min-y
+                                        </div>
+                                        <input id="minY" placeholder="lower left y-axis" type="text">
+                                    </div>
+                                </div>                              
+                            </div>
+                            <div class="two fields">
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui label">
+                                            max-x
+                                        </div>
+                                        <input id="maxX" placeholder="top right x-axis" type="text">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui label">
+                                            max-y
+                                        </div>
+                                        <input id="maxY" placeholder="top right y-axis" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui labeled action input">
+                                    <div class="ui label">
+                                        <i class="info circle icon link"></i>
+                                        EPSG:
+                                    </div>
+                                    <div class="ui fluid epsg popup transition hidden">
+                                        <h4>EPSG Codes</h4>
+                                        <p>EPSG Codes are a "collection of definitions of coordinate reference systems and coordinate transformations". Every coordinate system has an EPSG code.</p>
+                                        <p>To find your code, enter the name of the coordinate system you are using into the search bar on the right. Ensure the coordinate system you are using matches the coordinates entered for the bounding box.</p>
+                                        <p>For a more detailed search, please visit <a href="https://epsg.io" target="_blank">epsg.io</a>.</p>
+                                        <p id="epsg-text"></p>
+                                    </div>
+                                    <input id="epsg" placeholder="Enter code, or search by projection" type="text">
+                                    <button type="button" class="epsg-search ui icon button">
+                                        <i class="search icon"></i>
+                                    </button>
+                                </div>                                
+                            </div>
+                            <div class="ui warning tiny message">
+                                <i class="close icon"></i>
+                                <div class="header">Could you check your EPSG code!</div>
+                                <ui class="list">
+                                    <li>The EPSG code did not work with those coordinates. Double check the code, and your coordinate units. For more help, try <a href="https://epsg.io" target="_blank">here</a>.</li>
+                                </ui>                                    
+                            </div>
+                            <div class="form-buttons two fields">
+                                <div class="field">
+                                    <div class="ui blue fluid labeled icon disabled button">
+                                        Download Data
+                                        <i class="download icon"></i>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="preview-bbox ui teal fluid labeled icon button">
+                                        Preview
+                                        <i class="add icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>                    
+                </div>
+            </div>
+            
+            <!-- Shapefile Upload -->
+            <div id="upload-shapefile-panel" class="info-panel">
+                <div class="sidebar-panel-heading">
+                    <h4 class="sidebar-panel-title">
+                        <span>Upload Shapefile</span>
+                    </h4>
+                    <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
+                </div>
+                <div class="sidebar-panel-body">
+                    <span class="title-main">Select an area from your shapefile</span>
+                    <div class="ui segment">
+                        <p>Upload your own zipped shapefile and select an area based off the full extent, or from selected points or polygons in your file. <b>Zip must contain .shp and .dbf files.</b></p>
+                    </div>
+                    <div class="ui form segment">
+                        <div class="field">
+                            <div id="zipfile" class="ui pink fluid labeled icon button upload" data-content="Mandatory files: SHP, DBF" data-variation="inverted small">
+                                Upload zip file
+                                <i class="file archive outline icon"></i>
+                                <input id="file" accept=".zip" type="file">
+                            </div>
+                        </div>
+                        <div id="dataInfo"></div>
+                        <div id="options">
+                            <div class="field">
+                                <div id="options-epsg-field" class="field ui labeled input">
+                                    <div class="ui label">EPSG</div>
+                                        <input id="options-epsg" placeholder="Enter code, or search by projection" onfocus='this.value="";' type="text">
+                                </div>
+                            </div>    
+                            <div class="field">
+                                <div id="options-encoding-field" class="ui labeled input">
+                                    <div class="ui label">Encoding</div>
+                                        <input id="options-encoding" placeholder="set your encoding UTF-8, Big5..." onfocus='this.value="";' type="text">
+                                </div>
+                            </div>    
+                        </div>
+                        <div class="form-buttons two fields">
+                            <div class="field">
+                                <div class="ui blue fluid labeled icon disabled button">
+                                    Download Data
+                                    <i class="download icon"></i>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="preview-shapefile ui teal fluid labeled icon button disabled">
+                                    Preview
+                                    <i class="add icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Download -->
+            <div id="download-data-panel" class="info-panel">
+                <div class="sidebar-panel-heading">
+                    <h4 class="sidebar-panel-title">
+                        <span>Download some data here</span>
+                    </h4>
+                    <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
+                </div>
+                <div class="sidebar-panel-body">
+                    <p id="border-test">info goes in here as well</p>
+                </div>
+            </div>
+
+            <!-- Help and Support -->
+            <div id="help-panel" class="info-panel">
+                <div class="sidebar-panel-heading">
+                    <h4 class="sidebar-panel-title">
+                        <span>Help</span>
+                    </h4>
+                    <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
+                </div>
+                <div class="sidebar-panel-body">
+                    <p id="border-test">Find solace in these words</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="map pusher">
+        <div id="map" class="map"></div>
+    </div>
+<!--    </div>-->
+
+
+
+
+
+    <script>
+        /****************************  Semantic-UI jQuery support *****************************/
+
+        /* 
+         
+        Semantic UI dependency code works in conjunction with class definitions
+        to generate animation and user interaction with classes
+         
+        */
+
+        // Gives us tooltips on buttons and info popups
+        //
+        $('.ui.button').popup();
+        $('.info.circle.icon').popup({            
+            inline: true,
+            on: 'click',
+            popup: $('.epsg.popup'),
+            position: 'top left',
+            variation: 'tiny'
+//            boundary: '.sidebar-panel-body'
+        });
+        
+        // Open an information panel with menu button click    
+        //
+        function closeAllPanels() {
+            $('.info-panel').each(function (i) {
+                $(this).addClass('hidden');
+            })
+        };
+
+        // Create sidebar animation and menu button control
+        //
+        $('.open-panel').click(function () {
+            // open sidebar
+            $('.ui.sidebar').sidebar({
+                    transition: 'overlay',
+                    dimPage: false,
+                    closable: false,
+                })
+                .sidebar('show');
+
+            // identify active button action
+            if ($(this).hasClass('clicked')) {
+                $('.open-panel').removeClass('clicked').blur();
+                $(".ui.sidebar").sidebar('hide');
+            } else {
+                $('.open-panel').removeClass('clicked');
+                $(this).addClass('clicked');
+            }
+
+            // control visible sidebar information
+            closeAllPanels();
+            var id = '#' + this.id + '-panel';
+            $(id).removeClass('hidden');
+        });
+
+        // Close menu with Close icon
+        //
+        $('.sidebar-panel-icon').click(function () {
+            $('.open-panel').removeClass('clicked').blur();
+            $(".ui.sidebar").sidebar('hide');
+        });
+
+        // Animate Accordions
+        //
+        $('.ui.accordion').accordion();
+        
+        // Animate Drawing Dropdown
+        //
+        $('.ui.dropdown').dropdown();      
+        
+        // Create custom zoom controls
+        //
+        $('#zoom-in').click(function () {
+            var $zoom = ol.animation.zoom({
+                resolution: map.getView().getResolution()
+            });
+            map.beforeRender($zoom);
+            map.getView().setResolution(map.getView().getResolution() * 0.5);
+        });
+
+        $('#zoom-out').click(function () {
+            var $zoom = ol.animation.zoom({
+                resolution: map.getView().getResolution()
+            });
+            map.beforeRender($zoom);
+            map.getView().setResolution(map.getView().getResolution() * 2);
+        });
+        
+        $('.bbox-form .message .close').on('click', function() {
+            $('.bbox-form').removeClass('warning');
+        });
+
+
+
+        /****************************  Define Map Layers and Map  *****************************/
+
+
+        // Basemap layer, OSM source
+        //
+        var OSM_layer = new ol.layer.Tile({
+            source: new ol.source.OSM()
+        });
+        
+        // Set view and zoom, set for Canada
+        //
+        var view = new ol.View({
+            center: [-10997148, 9319099],
+            zoom: 4
+        });
+        
+        // Create scaleline control
+        //
+        var scaleline = new ol.control.ScaleLine();
+        var attr = new ol.control.Attribution();
+        
+        // Create custom style 
+        //
+        var myStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255,100,50,.2)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'rgba(255,100,50,1)'
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: 'rgba(255,100,50,.2)'
+                })
+            })
+        });        
+        
+        // Define source for multiple use
+        //      
+        var source = new ol.source.Vector({                
+            wrapX: false
+        });
+        
+        // Vector layer for drawings
+        //
+        var vectorDraw = new ol.layer.Vector({
+            name: 'vectorDraw',
+            source: source,
+            style: myStyle
+        });
+        
+        // Create map, point to target div
+        //
+        var map = new ol.Map({
+            controls: [scaleline, attr],
+            interactions: ol.interaction.defaults({
+                doubleClickZoom: false
+            }),
+            layers: [OSM_layer, vectorDraw],
+            target: 'map',
+            view: view
+        });
+                   
+        
+        
+        /****************************  Add Map Drawing Tools      *****************************/
+
+       
+        
+        // Setup some globals and fetch the selected draw tool
+        var draw, lastFeature;
+        var selectType = $('.drawing-dropdown').dropdown('get value');
+        
+        
+        
+        // Create main interaction function for adding and removing
+        // drawings on the map page
+        //
+        function addInteraction() {
+            var value = selectType;
+            console.log
+            // Setup some geometry conditionals
+            if(value !== 'None') {
+                var geometryFunction, maxPoints;
+                if(value === 'Square') {
+                    value = 'Circle';
+                    geometryFunction = ol.interaction.Draw.createRegularPolygon(4);
+                } else if (value === 'Box') {
+                    value = 'LineString';
+                    maxPoints = 2;
+                    geometryFunction = function(coordinates, geometry) {
+                        if (!geometry) {
+                            geometry = new ol.geom.Polygon(null);
+                        }
+                        var start = coordinates[0];
+                        var end = coordinates[1];
+                        geometry.setCoordinates([
+                            [start, [start[0], end[1]], end, [end[0], start[1]], start]
+                        ]);
+                        return geometry;
+                    };
+                }
+                
+                // Create the draw interaction with defined geometry function
+                draw = new ol.interaction.Draw({
+                    source: source,
+                    type: (value),
+                    geometryFunction: geometryFunction,
+                    maxPoints: maxPoints
+                });
+                
+                // Handle drawing feature removal
+                var removeLastFeature = function() {
+                    if (lastFeature) 
+                        source.removeFeature(lastFeature);
+                };
+                
+                // Remove feature when begining all drawings except Points 
+                draw.on('drawstart', function(e) {
+                    shapefileSource.clear();
+                    if (selectType !== 'Point') {
+                        source.clear();
+                    }
+                });
+                
+                // Remove feature when ending drawing IF it's a Point and IF
+                // there's a feature to remove
+                draw.on('drawend', function (e) {
+                    if (selectType == 'Point') {
+                        if (source.getFeatures().length > 0)
+                            removeLastFeature();
+                    }
+                    lastFeature = e.feature;
+                        console.log(draw.a);
+                });
+                
+                // Finally, add the draw interaction to the map
+                map.addInteraction(draw);
+            } else 
+                source.clear();                       
+        };
+        
+        addInteraction(); 
+        
+        // Handle drawing tool change
+        $('.drawing-dropdown').change( function() { 
+            selectType = $('.drawing-dropdown').dropdown('get value');
+            map.removeInteraction(draw);
+            addInteraction();
+        });
+            
+        
+        /****************************  Add user defined bbox draw *****************************/
+        
+        
+        // Validate user inputs, display any warnings, then on success
+        // add a polygon from the Bounding Box user input
+        //        
+        function addUsersCoords() {
+            source.clear();
+            var minX, minY, maxX, maxY, epsg, error, coords;
+            
+            error= 0;
+            coords = [ 
+                [minX, '#minX'], 
+                [minY, '#minY'], 
+                [maxX, '#maxX'], 
+                [maxY, '#maxY'], 
+                [epsg, '#epsg'] 
+            ];
+            
+            $.each(coords, function(){
+                this[0] = parseFloat($(this[1]).val());
+            })            
+            
+            for (i = 0; i < coords.length; i++){            
+                if (!$.isNumeric(coords[i][0])){
+                    $(coords[i][1]).closest('.field').addClass('error');
+                    error += 1;
+                } else 
+                    $(coords[i][1]).closest('.field').removeClass('error');                
+            }
+
+            if (error == 0) {                
+                var polygon = new ol.Feature({
+                    geometry: new ol.geom.Polygon([
+                        [
+                            //  Example coords
+    //                        [-61.933352224,45.886673304000006],
+    //                        [-61.933352224,47.053339784],
+    //                        [-64.450018488,47.053339784],
+    //                        [-64.450018488,45.886673304000006],
+    //                        [-61.933352224,45.886673304000006]
+                            [coords[2][0], coords[1][0]],
+                            [coords[2][0], coords[3][0]],
+                            [coords[0][0], coords[3][0]],
+                            [coords[0][0], coords[1][0]],
+                            [coords[2][0], coords[1][0]]
+
+                        ]
+                    ])
+                });
+                
+                // Doesn't work, gotta catch the error!
+                try {
+                    polygon.getGeometry().transform('EPSG:' + coords[4][0], 'EPSG:3857');
+                    source.clear();
+                    
+                    // added this
+                    shapefileSource.clear();
+                    
+                    vectorDraw.getSource().addFeature(polygon);
+                    var extent = vectorDraw.getSource().getExtent();
+                    map.getView().fit(extent, map.getSize());
+                    lastFeature = polygon;
+                    $('.bbox-form').removeClass('warning');
+                }
+                catch(err) {
+                    $('.bbox-form').addClass('warning');
+                }               
+            } 
+        };
+
+        // Add users feature with onlick
+        $('.preview-bbox').click( function(){
+            $('.drawing-dropdown').dropdown('set selected', "None");
+            addUsersCoords();
+        });
+        
+        
+        /****************************  Search bar for EPSG codes  *****************************/
+        
+        var result2;
+        function search(query) {
+            $('#epsg').val('searching...');
+            fetch('https://epsg.io/?format=json&q=' + query).then(function(response) {
+                return response.json();
+            }).then(function(json) {
+                var results = json['results'];
+                result2 = json['results'];
+                console.log(result2);
+                if (results && results.length > 0) {
+                    console.log("check1")
+                    for (var i = 0, ii = results.length; i < ii; i++) {
+                        var result = results[i];
+                        console.log("check2")
+                        if (result) {
+                            var code = result['code'], name = result['name'],
+                                proj4def = result['proj4'], bbox = result['bbox'];
+                            console.log("check3")
+                            if (code && code.length > 0 && proj4def && proj4def.length > 0 &&
+                               bbox && bbox.length == 4) {
+                                $('#epsg').val(code);
+                                $('#epsg-text').text('Your current code is EPSG:' + 
+                                                     code + ' for ' + name +' coordinate system.');
+                                return
+                            }
+                        }
+                    }
+                }
+                $('#epsg').val("Nothing found, using EPSG:4326 (WGS84)");
+                $('#epsg-text').text('')
+            })
+        }
+        
+        $('.epsg-search').click(function() {
+            var query = $('#epsg').val();
+            search(query);
+        })
+        
+
+        /****************************  Load Available data layers *****************************/
+
+        
+        // REST URL of data server 
+        var $url2 = "http://ulysses.agr.gc.ca:8080/geoserver/rest/workspaces/Canada/coveragestores/"
+        var $url = "http://ulysses.agr.gc.ca:8080/geoserver/rest/workspaces/Canada/layergroups.json"
+        
+        // Populates list of available data layers from Ulysses using REST api
+        // First, fetch a list of available layergroups
+        $.ajax({
+            url: $url,
+            type: "GET",
+        })
+            .done( function(data){
+                var $lGLength = data.layerGroups.layerGroup.length;
+                var $lGArray = [];            
+
+                // Write layergroups to sorted array lGArray 
+                for(i = 0; i < $lGLength; i++){
+                    $lGArray.push(data.layerGroups.layerGroup[i])
+                    $lGArray.sort();
+                }
+
+                // Loop through lGArray and fetch data on each entry
+                var $lGALength = $lGArray.length;
+                for(x = 0; x < $lGALength; x ++) {
+                    // 
+                    $.ajax({
+                        url: $lGArray[x].href,
+                        type: "GET",
+                        async: false,
+                    })
+                        .done( function(data) {
+                            var $lGName = data.layerGroup.name;
+                            var $lGTxt = data.layerGroup.abstractTxt;
+                            var $pubLength = data.layerGroup.publishables.published.length;
+                        
+                            // Create an accordion section for each layergroup
+                            $('#layer-group-acc').append('<div id="' + $lGName + '" class="title">' + 
+                                                          '<i class="dropdown icon"></i>' +
+                                                           $lGName + '<br/>' +
+                                                          '<span class="span-attr">' + $lGTxt + '</span>' +
+                                                          '</div>' + 
+                                                          '<div class="content">' +
+                                                          '<select id="dropdown-' + $lGName + '" name="attributes" multiple="" class="layer-dropdown ui fluid dropdown multiple selection">' +
+                                                          '<option value="">soil attribute</option>' +
+                                                          '</select></div>');
+                            for(y = 0; y < $pubLength; y++){
+                                // Get all the layers for each layergroup, write to dropdown 
+                                $.ajax({
+                                    url: $url2 + data.layerGroup.publishables.published[y].name + ".json",
+                                    type: "GET",
+                                    async: false,
+                                })
+                                    .done( function(data) {
+                                        $('#dropdown-' + $lGName).append('<option value="' + data.coverageStore.name + '">' + data.coverageStore.description + '</option>');
+                                    })
+                                    // Handle failure of loser code
+                                    .fail( function(xhr, status) {
+                                    // handle this shit
+                                    });
+                            }
+                        })
+                        // Handle anotehr server error
+                        .fail( function (xhr, status){
+                        // Do something with error response    
+                        });
+                }
+            
+            // Handle a tallied list of selected files
+            $('.ui.dropdown.multiple').dropdown() 
+                                      .change( function() {                        
+                        var $list = $('.layer-dropdown').dropdown('get value');
+                        var $lyrList = $('.selected-layers-list');
+
+                        $lyrList.empty().html( function() {
+                            $.each($list, function(index, value){
+                                if ($.isArray(this)) {
+                                    $.each(this, function(index, value){
+                                        $lyrList.append('<div class="item">' + 
+                                                '<i class="check circle icon"></i>' + 
+                                                '<div class="content">' + value + 
+                                                '</div></div>');
+                                    })
+                                } else if (value != "") {
+                                     $lyrList.append('<div class="item">' + 
+                                                '<i class="check circle icon"></i>' + 
+                                                '<div class="content">' + value + 
+                                                '</div></div>');  
+                                }   
+                            })
+                        }); 
+                    }); 
+            })        
+            // Handle server response failure
+            .fail( function(xhr, status){
+                // Do something with error response
+            });
+        
+        
+        /****************************  Add some shapefile spice   *****************************/
+    
+        // New style for the shapefile uploads
+        var shapeStyle = new ol.style.Style ({
+            image: new ol.style.Circle({
+                radius: 5,
+                fill: new ol.style.Fill({
+                    color: 'rgba(230,249,255,.2)'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(0,154,204,0.5)'
+                })
+            }),
+            fill: new ol.style.Fill({
+                color: 'rgba(230,249,255,.2)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'rgba(0,154,204,0.5)'
+            })
+        });
+        
+        // Define new source for new layer
+        var shapefileSource = new ol.source.Vector({
+            wrapX: false 
+        });
+        
+        // Define new layer for shapefile upload
+        var shapefileLayer = new ol.layer.Vector({
+            name: 'shapefileLayer',
+            source: shapefileSource,
+            style: shapeStyle
+        })
+        map.addLayer(shapefileLayer);
+        
+        // Add users shapefile upload
+        var file;
+        function loadShpZip() {
+            shapefileSource.clear();
+            
+            var check,
+                encoding = ($('#options-encoding').val() == '') ? 'UTF-8' : $('#options-encoding').val(),
+                epsg = ($('#options-epsg').val() == '') ? '4326' : $('#options-epsg').val();
+            
+            loadshp({
+                url: file,
+                encoding: encoding,
+                EPSG: epsg
+            }, function(data){
+                console.log("data");
+                console.log("data: " + data);
+                var feature = new ol.format.GeoJSON().readFeatures(data, {
+                    featureProjection: 'EPSG:3857'
+                });
+                shapefileLayer.getSource().addFeatures(feature);
+                shapefileLayer.set('name', file.name);
+
+                var extent = shapefileLayer.getSource().getExtent();
+                map.getView().fit(extent, map.getSize());
+                check = true;
+                console.log(check);
+            });
+
+            console.log("eh?2");
+            return check;
+        };         
+        
+        // Show options and enable preview when user adds zipped file
+        $("#file").change(function(evt) {
+            file = evt.target.files[0];
+            var html = '<div class="field">' +                         
+                         '<div id="dataName" class="ui label">' +
+                           '<i class="checkmark icon"></i>' + file.name +
+                           '<div id="dataSize" class="detail">' + file.size + ' kb' + 
+                       '</div></div></div>';
+            if(file.size > 0) {
+                $('#dataInfo').addClass('field').html(html);                            
+                $('#options').slideDown(500);
+                $('.preview-shapefile').removeClass('disabled');
+            }            
+        });
+        
+        // Clear all map features and load users shapefile 
+        $( '.preview-shapefile' ).click(function () {
+            var dDDown = $('.drawing-dropdown');
+            if(dDDown.dropdown('get value') == "None") {
+                selectType = dDDown.dropdown('get value');
+                map.removeInteraction(draw);
+                addInteraction();
+            } else {
+                dDDown.dropdown('set selected', "None");
+            }
+            try {
+                console.log(loadShpZip());
+                console.log("eh?3")
+            }
+            catch(err) {                
+            }
+        });
+       
+        
+        
+        /****************************  Add shapefile selection interaction ********************/
+
+        
+        // Create select interaction for shapefile uploads
+        var shapefileSelect = new ol.interaction.Select({
+            layers: [shapefileLayer],
+        }); 
+        
+        // Add it to the map
+        var shapefileSelected = shapefileSelect.getFeatures();        
+        map.addInteraction(shapefileSelect);
+        
+        // Create dragbox interaction for shapefile uploads
+        var dragBox = new ol.interaction.DragBox({
+            condition: ol.events.condition.platformModifierKeyOnly,
+            layers: [shapefileLayer],
+        });
+        
+        // Add it to the map
+        map.addInteraction(dragBox);
+        
+        // Fetch all selected features and write to an array
+        dragBox.on('boxend', function() {
+            var extent = dragBox.getGeometry().getExtent();
+            shapefileSource.forEachFeatureIntersectingExtent(extent, function(feature) {
+                shapefileSelected.push(feature);
+            }); 
+        });
+        
+        dragBox.on('boxstart', function() {
+            shapefileSelected.clear();
+        })       
+                
+        // A series of select console log checks
+//        select.on('select', function(e) {
+//            console.log("1" + e.target.getFeatures());
+//            console.log(e.target.getFeatures().a);
+//            console.log(e.target.getFeatures());
+//            console.log(e.selected[0]);
+//            console.log(e.selected[0].T);
+//            console.log(e.selected[0].T.geometry.A);
+//            document.getElementById('features').innerHTML = '&nbsp;' +
+//                e.target.getFeatures().getLength() +
+//                ' selected features (last operation selected ' + e.selected.length +
+//                ' and deselected ' + e.deselected.length + ' features)';            
+//        });
+        
+                
+        
+
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
