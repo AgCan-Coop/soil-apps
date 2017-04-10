@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>AgCan Soils Portal</title>
+    <title>Plant Disease System</title>
 
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="../lib/ol/v3.19.1-dist/ol.js" type="text/javascript"></script>
@@ -26,12 +26,18 @@
 
 <body>
 
-     <div id="sidebar" class="ui very wide right sidebar">
+     <div id="sidebar" class="ui right sidebar">
+
         <div class="sidemenu-top ui fixed large black vertical icon buttons">
             <button id="layer-options" class="open-panel ui button" data-content="Layer options" data-variation="mini inverted" data-position="left center"><i class="list layout icon"></i></button>
-            <button id="drawing-tools" class="open-panel ui button" data-content="Drawing tools" data-variation="mini inverted" data-position="left center"><i class="edit icon"></i></button>
+
+            <button id="data-process" class="open-panel ui button" data-content="Data Process" data-variation="mini inverted" data-position="left center"><i class="hourglass half icon"></i></button>
+
             <button id="upload-shapefile" class="open-panel ui button" data-content="Upload shapefile" data-variation="mini inverted" data-position="left center"><i class="upload icon"></i></button>
             <button id="download-data" class="open-panel ui button" data-content="Download data" data-variation="mini inverted" data-position="left center"><i class="download icon"></i></button>
+
+<!--             <button id="data-process" class="open-panel ui button" data-content="Data Process" data-variation="mini inverted" data-position="left center"><i class="play icon"></i></button> -->
+
             <button id="help" class="open-panel ui button" data-content="Help" data-variation="mini inverted" data-position="left center"><i class="help circle icon"></i></button>
         </div>
         <div class="sidemenu-bottom ui fixed large black vertical icon buttons">
@@ -67,15 +73,38 @@
             </div>
             
             <!-- Drawing Tools -->
-            <div id="drawing-tools-panel" class="drawing-tools-panel info-panel">
+            <div id="data-process-panel" class="data-process-panel info-panel">
                 <div class="sidebar-panel-heading">
                     <h4 class="sidebar-panel-title">
                         <span>Drawing Tools</span>
                     </h4>
                     <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
                 </div>
+                <div class="ui three steps">
+                          <div class="active step">
+                            <i class="mouse pointer icon"></i>
+                            <div class="content">
+                              <div class="title">Step1:Select</div>
+                              <div class="description">Select your Area of Interest</div>
+                            </div>
+                          </div>
+                          <div class="active step">
+                            <i class="setting icon"></i>
+                            <div class="content">
+                              <div class="title">Step2:Process</div>
+                              <div class="description">Run Plant Diease Model</div>
+                            </div>
+                          </div>
+                          <div class="active step">
+                            <i class="file icon"></i>
+                            <div class="content">
+                              <div class="title">Step3:Result</div>
+                              <div class="description">Getting Result</div>
+                            </div>
+                          </div>
+                </div>
                 <div class="sidebar-panel-body">
-                    <span class="title-main">Select area with drawing tools</span>
+                    <span class="title-main">1: Select area with drawing tools</span>
                     <div class="ui segment">                                            
                         <div id="drawing-dropdown" class="drawing-dropdown ui fluid selection dropdown">
                             <input name="tools" value="None" type="hidden">
@@ -256,7 +285,7 @@
                 </div>
             </div>
 
-            <!-- Help and Support -->
+           <!-- Help and Support -->
             <div id="help-panel" class="info-panel">
                 <div class="sidebar-panel-heading">
                     <h4 class="sidebar-panel-title">
@@ -268,6 +297,8 @@
                     <p id="border-test">Find solace in these words</p>
                 </div>
             </div>
+
+
         </div>
 
     </div>
@@ -275,11 +306,6 @@
     <div class="map pusher">
         <div id="map" class="map"></div>
     </div>
-<!--    </div>-->
-
-
-
-
 
     <script>
         /****************************  Semantic-UI jQuery support *****************************/
@@ -882,20 +908,6 @@
             shapefileSelected.clear();
         })       
                 
-        // A series of select console log checks
-//        select.on('select', function(e) {
-//            console.log("1" + e.target.getFeatures());
-//            console.log(e.target.getFeatures().a);
-//            console.log(e.target.getFeatures());
-//            console.log(e.selected[0]);
-//            console.log(e.selected[0].T);
-//            console.log(e.selected[0].T.geometry.A);
-//            document.getElementById('features').innerHTML = '&nbsp;' +
-//                e.target.getFeatures().getLength() +
-//                ' selected features (last operation selected ' + e.selected.length +
-//                ' and deselected ' + e.deselected.length + ' features)';            
-//        });
-        
                 
         
 
