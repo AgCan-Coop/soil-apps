@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Plant Disease System</title>
+    <title>Plant Diease Model</title>
 
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="../lib/ol/v3.19.1-dist/ol.js" type="text/javascript"></script>
@@ -26,18 +26,12 @@
 
 <body>
 
-     <div id="sidebar" class="ui right sidebar">
-
+     <div id="sidebar" class="ui very wide right sidebar">
         <div class="sidemenu-top ui fixed large black vertical icon buttons">
             <button id="layer-options" class="open-panel ui button" data-content="Layer options" data-variation="mini inverted" data-position="left center"><i class="list layout icon"></i></button>
-
-            <button id="data-process" class="open-panel ui button" data-content="Data Process" data-variation="mini inverted" data-position="left center"><i class="hourglass half icon"></i></button>
-
+            <button id="drawing-tools" class="open-panel ui button" data-content="Drawing tools" data-variation="mini inverted" data-position="left center"><i class="edit icon"></i></button>
             <button id="upload-shapefile" class="open-panel ui button" data-content="Upload shapefile" data-variation="mini inverted" data-position="left center"><i class="upload icon"></i></button>
             <button id="download-data" class="open-panel ui button" data-content="Download data" data-variation="mini inverted" data-position="left center"><i class="download icon"></i></button>
-
-<!--             <button id="data-process" class="open-panel ui button" data-content="Data Process" data-variation="mini inverted" data-position="left center"><i class="play icon"></i></button> -->
-
             <button id="help" class="open-panel ui button" data-content="Help" data-variation="mini inverted" data-position="left center"><i class="help circle icon"></i></button>
         </div>
         <div class="sidemenu-bottom ui fixed large black vertical icon buttons">
@@ -72,39 +66,153 @@
                 </div>
             </div>
             
-            <!-- Drawing Tools -->
-            <div id="data-process-panel" class="data-process-panel info-panel">
+            <!-- Plant Disease Model -->
+            <div id="drawing-tools-panel" class="drawing-tools-panel info-panel">
                 <div class="sidebar-panel-heading">
                     <h4 class="sidebar-panel-title">
-                        <span>Drawing Tools</span>
+                        <span>Plant Diease </span>
                     </h4>
                     <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
                 </div>
-                <div class="ui three steps">
-                          <div class="active step">
-                            <i class="mouse pointer icon"></i>
-                            <div class="content">
-                              <div class="title">Step1:Select</div>
-                              <div class="description">Select your Area of Interest</div>
-                            </div>
-                          </div>
-                          <div class="active step">
-                            <i class="setting icon"></i>
-                            <div class="content">
-                              <div class="title">Step2:Process</div>
-                              <div class="description">Run Plant Diease Model</div>
-                            </div>
-                          </div>
-                          <div class="active step">
-                            <i class="file icon"></i>
-                            <div class="content">
-                              <div class="title">Step3:Result</div>
-                              <div class="description">Getting Result</div>
-                            </div>
-                          </div>
+                <div class="ui top attached tabular menu">
+
+                <div class="active item">
+                  <i class ="mouse pointer icon"></i>
+                    Step 1: Select 
+                  </div>
+
+                <div class="item">
+                  <i class ="configure icon"></i>
+                    Step 2: Process 
+                  </div>
+
+                <div class="item">
+                  <i class ="database icon"></i>
+                    Step 3: Download 
+                  </div>
+                </div>
+                <div id ="step1" class="ui bottom attached active tab segment">
+                                           
+                    <h3>  Select an Area of Interest by Clicking </h3> 
+
+                <form class="form-inline">
+                  <label>Action type &nbsp;</label>
+                    <select id="type" class="form-control">
+                      <option value="singleclick" selected>Click</option>
+                      <option value="pointermove">Hover</option>
+                    </select></br>
+                  <span id="status">&nbsp;0 selected features</span>
+                </form>                    
+
+                <div class="ui segment">  
+                <span class="title-main"class="ui header">Click submit when finished</span>
+                <div>
+                <br>
+                <button class="positive ui button">Submit</button>
+                </div> 
+               
+                </div>
+                </div>
+
+               <div id ="step2" class="ui bottom attached tab segment">
+                                           
+                    <h3>  Select an Area of Interest by Clicking </h3>             
+
+
+                <div class="ui segment">  
+                <span class="title-main"class="ui header">Click submit when finished</span>
+                <div>
+                <br>
+                <button class="positive ui button">Submit</button>
+                </div> 
+               
+                </div>
+                </div>
+
+
+               <div id ="step3" class="ui bottom attached tab segment">
+                                           
+                    <h3>  Select an Area of Interest by Clicking </h3>                      
+
+                <div class="ui segment">  
+                <span class="title-main"class="ui header">Click submit when finished</span>
+                <div>
+                <br>
+                <button class="positive ui button">Submit</button>
+                </div> 
+               
+                </div>
+                </div>               
+
+            </div>
+
+            
+            <!-- Shapefile Upload -->
+            <div id="upload-shapefile-panel" class="info-panel">
+                <div class="sidebar-panel-heading">
+                    <h4 class="sidebar-panel-title">
+                        <span>Upload Shapefile</span>
+                    </h4>
+                    <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
                 </div>
                 <div class="sidebar-panel-body">
-                    <span class="title-main">1: Select area with drawing tools</span>
+                    <span class="title-main">Select an area from your shapefile</span>
+                    <div class="ui segment">
+                        <p>Upload your own zipped shapefile and select an area based off the full extent, or from selected points or polygons in your file. <b>Zip must contain .shp and .dbf files.</b></p>
+                    </div>
+                    <div class="ui form segment">
+                        <div class="field">
+                            <div id="zipfile" class="ui pink fluid labeled icon button upload" data-content="Mandatory files: SHP, DBF" data-variation="inverted small">
+                                Upload zip file
+                                <i class="file archive outline icon"></i>
+                                <input id="file" accept=".zip" type="file">
+                            </div>
+                        </div>
+                        <div id="dataInfo"></div>
+                        <div id="options">
+                            <div class="field">
+                                <div id="options-epsg-field" class="field ui labeled input">
+                                    <div class="ui label">EPSG</div>
+                                        <input id="options-epsg" placeholder="Enter code, or search by projection" onfocus='this.value="";' type="text">
+                                </div>
+                            </div>    
+                            <div class="field">
+                                <div id="options-encoding-field" class="ui labeled input">
+                                    <div class="ui label">Encoding</div>
+                                        <input id="options-encoding" placeholder="set your encoding UTF-8, Big5..." onfocus='this.value="";' type="text">
+                                </div>
+                            </div>    
+                        </div>
+                        <div class="form-buttons two fields">
+                            <div class="field">
+                                <div class="ui blue fluid labeled icon disabled button">
+                                    Download Data
+                                    <i class="download icon"></i>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="preview-shapefile ui teal fluid labeled icon button disabled">
+                                    Preview
+                                    <i class="add icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Data Download -->
+            <div id="download-data-panel" class="info-panel">
+                <div class="sidebar-panel-heading">
+                    <h4 class="sidebar-panel-title">
+                        <span>Download some data here</span>
+                    </h4>
+                    <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
+                </div>
+                <div class="sidebar-panel-body">
+                <div class="ui bottom attached active tab segment">
+                <div class="sidebar-panel-body">
+                    <span class="title-main">Select area with drawing tools</span>
                     <div class="ui segment">                                            
                         <div id="drawing-dropdown" class="drawing-dropdown ui fluid selection dropdown">
                             <input name="tools" value="None" type="hidden">
@@ -214,78 +322,15 @@
                                 </div>
                             </div>
                         </form>
-                    </div>                    
-                </div>
-            </div>
-            
-            <!-- Shapefile Upload -->
-            <div id="upload-shapefile-panel" class="info-panel">
-                <div class="sidebar-panel-heading">
-                    <h4 class="sidebar-panel-title">
-                        <span>Upload Shapefile</span>
-                    </h4>
-                    <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
-                </div>
-                <div class="sidebar-panel-body">
-                    <span class="title-main">Select an area from your shapefile</span>
-                    <div class="ui segment">
-                        <p>Upload your own zipped shapefile and select an area based off the full extent, or from selected points or polygons in your file. <b>Zip must contain .shp and .dbf files.</b></p>
-                    </div>
-                    <div class="ui form segment">
-                        <div class="field">
-                            <div id="zipfile" class="ui pink fluid labeled icon button upload" data-content="Mandatory files: SHP, DBF" data-variation="inverted small">
-                                Upload zip file
-                                <i class="file archive outline icon"></i>
-                                <input id="file" accept=".zip" type="file">
-                            </div>
-                        </div>
-                        <div id="dataInfo"></div>
-                        <div id="options">
-                            <div class="field">
-                                <div id="options-epsg-field" class="field ui labeled input">
-                                    <div class="ui label">EPSG</div>
-                                        <input id="options-epsg" placeholder="Enter code, or search by projection" onfocus='this.value="";' type="text">
-                                </div>
-                            </div>    
-                            <div class="field">
-                                <div id="options-encoding-field" class="ui labeled input">
-                                    <div class="ui label">Encoding</div>
-                                        <input id="options-encoding" placeholder="set your encoding UTF-8, Big5..." onfocus='this.value="";' type="text">
-                                </div>
-                            </div>    
-                        </div>
-                        <div class="form-buttons two fields">
-                            <div class="field">
-                                <div class="ui blue fluid labeled icon disabled button">
-                                    Download Data
-                                    <i class="download icon"></i>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="preview-shapefile ui teal fluid labeled icon button disabled">
-                                    Preview
-                                    <i class="add icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
 
-            <!-- Data Download -->
-            <div id="download-data-panel" class="info-panel">
-                <div class="sidebar-panel-heading">
-                    <h4 class="sidebar-panel-title">
-                        <span>Download some data here</span>
-                    </h4>
-                    <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
-                </div>
-                <div class="sidebar-panel-body">
-                    <p id="border-test">info goes in here as well</p>
+
                 </div>
             </div>
 
-           <!-- Help and Support -->
+            <!-- Help and Support -->
             <div id="help-panel" class="info-panel">
                 <div class="sidebar-panel-heading">
                     <h4 class="sidebar-panel-title">
@@ -297,8 +342,6 @@
                     <p id="border-test">Find solace in these words</p>
                 </div>
             </div>
-
-
         </div>
 
     </div>
@@ -306,6 +349,10 @@
     <div class="map pusher">
         <div id="map" class="map"></div>
     </div>
+
+
+
+
 
     <script>
         /****************************  Semantic-UI jQuery support *****************************/
@@ -316,6 +363,7 @@
         to generate animation and user interaction with classes
          
         */
+        
 
         // Gives us tooltips on buttons and info popups
         //
@@ -404,22 +452,42 @@
 
         /****************************  Define Map Layers and Map  *****************************/
 
+       var view = new ol.View({
+          //change projection to geoserver's projection
+          projection: "EPSG:4326",
+          center: [-98.5284468774974,50.71391708013823],
+                zoom: 7
+        });
 
-        // Basemap layer, OSM source
-        //
-        var OSM_layer = new ol.layer.Tile({
-            source: new ol.source.OSM()
+        // creating a openlayer base map
+        var osm_map = new ol.layer.Tile({
+          source: new ol.source.OSM()
+        });
+
+        // creating a map layer from own server
+
+        var region_map = new ol.layer.Vector({
+            source: new ol.source.Vector({
+              url: 'http://localhost:8080/geoserver/manitoba/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=manitoba:GeoBase_MUNI_MB_1_0_eng&maxFeatures=5000&outputFormat=application%2Fjson',
+              format: new ol.format.GeoJSON()
+            })
+          });
+
+
+        var source = new ol.source.Vector({                
+            wrapX: false
         });
         
-        // Set view and zoom, set for Canada
+        // Vector layer for drawings
         //
-        var view = new ol.View({
-            center: [-10997148, 9319099],
-            zoom: 4
+        var vectorDraw = new ol.layer.Vector({
+            name: 'vectorDraw',
+            source: source,
+            style: myStyle
         });
-        
-        // Create scaleline control
-        //
+
+
+
         var scaleline = new ol.control.ScaleLine();
         var attr = new ol.control.Attribution();
         
@@ -438,35 +506,143 @@
                     color: 'rgba(255,100,50,.2)'
                 })
             })
-        });        
+        }); 
         
-        // Define source for multiple use
-        //      
-        var source = new ol.source.Vector({                
-            wrapX: false
-        });
-        
-        // Vector layer for drawings
-        //
-        var vectorDraw = new ol.layer.Vector({
-            name: 'vectorDraw',
-            source: source,
-            style: myStyle
-        });
-        
-        // Create map, point to target div
-        //
-        var map = new ol.Map({
+         var map = new ol.Map({
             controls: [scaleline, attr],
             interactions: ol.interaction.defaults({
                 doubleClickZoom: false
             }),
-            layers: [OSM_layer, vectorDraw],
+            layers: [osm_map, region_map],
             target: 'map',
             view: view
-        });
-                   
         
+        // // Define source for multiple use
+        // //      
+        
+        // // Create map, point to target div
+        // //
+        // var map = new ol.Map({
+        //     controls: [scaleline, attr],
+        //     interactions: ol.interaction.defaults({
+        //         doubleClickZoom: false
+        //     }),
+        //     layers: [OSM_layer, vectorDraw],
+        //     target: 'map',
+        //     view: view
+
+                // Create scaleline control
+        //
+ 
+        });
+       // select region from JSON vector data            
+        
+
+    var coords;
+
+    var select = null;  // ref to currently selected interaction
+
+    // select interaction working on "singleclick"
+    var selectSingleClick = new ol.interaction.Select();
+
+    // select interaction working on "click"
+    var selectClick = new ol.interaction.Select({
+      condition: ol.events.condition.click
+    });
+
+    // select interaction working on "pointermove"
+    var selectPointerMove = new ol.interaction.Select({
+      condition: ol.events.condition.pointerMove
+    });
+
+    var selectElement = document.getElementById('type');
+
+    var changeInteraction = function() {
+      if (select !== null) {
+        map.removeInteraction(select);
+      }
+      var value = selectElement.value;
+      if (value == 'singleclick') {
+        select = selectSingleClick;
+      } else if (value == 'pointermove') {
+        select = selectPointerMove;
+      } else {
+        select = null;
+      }
+
+
+      if (select !== null) {
+        map.addInteraction(select);
+        select.on('select', function(e){
+        console.log(e);
+
+        document.getElementById('status').innerHTML = '&nbsp;' +
+              e.target.getFeatures().getLength() +
+              ' selected features (last operation selected ' + e.selected.length +
+              ' and deselected ' + e.deselected.length + ' features)';
+
+            console.log(e.selected[0].c.target.v),
+            coords = e.selected[0].c.target.v;
+            });
+          }
+        };
+
+
+        $("#runPython").click(function()
+          {
+          var floweringDate = document.getElementById("floweringDate").value;
+          console.log(floweringDate);
+          var CropDensity = document.getElementById("CropDensity").value;
+
+          $.post("../PHP/Manitoba_riskAnalysis.php", 
+          {    
+               minX: String(coords[0]),
+               minY: String(coords[1]),
+               maxX: String(coords[2]),
+               maxY: String(coords[3]),
+               CropDensity:CropDensity
+
+          })
+          .done(function(data, status)
+          {
+              $("#status").html("done");
+              data = jQuery.parseJSON(data);
+              console.log(data);
+
+              if (data[0] && data[1] )
+              {
+                $("#tifResponse1").html('<a href="' + data[0] + '" download=>Download Original Data</a>').appendTo('#button1');
+              
+                $("#tifResponse2").html('<a href="' + data[1] + '" download=>Download RiskMap</a>').appendTo('#button2');
+              }
+          })
+
+          var elem = document.getElementById("myBar");   
+          var width = 10;
+          var id = setInterval(frame, 10);
+          function frame() {
+            if (width >= 100) {
+              clearInterval(id);
+            } else {
+              width++; 
+              elem.style.width = width + '%'; 
+              elem.innerHTML = width * 1  + '%';
+            }
+          }
+
+          });
+
+    //     });
+    //   }
+    // };
+      /**
+       * onchange callback on the select element.
+       */
+      selectElement.onchange = changeInteraction;
+      changeInteraction();
+
+
+
         
         /****************************  Add Map Drawing Tools      *****************************/
 
@@ -908,6 +1084,20 @@
             shapefileSelected.clear();
         })       
                 
+        // A series of select console log checks
+//        select.on('select', function(e) {
+//            console.log("1" + e.target.getFeatures());
+//            console.log(e.target.getFeatures().a);
+//            console.log(e.target.getFeatures());
+//            console.log(e.selected[0]);
+//            console.log(e.selected[0].T);
+//            console.log(e.selected[0].T.geometry.A);
+//            document.getElementById('features').innerHTML = '&nbsp;' +
+//                e.target.getFeatures().getLength() +
+//                ' selected features (last operation selected ' + e.selected.length +
+//                ' and deselected ' + e.deselected.length + ' features)';            
+//        });
+        
                 
         
 
