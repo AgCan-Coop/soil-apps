@@ -10,11 +10,11 @@ to generate animation and user interaction with classes
 // Gives us tooltips on buttons and info popups
 $('.ui.button').popup();
 $('.info.circle.icon').popup({            
-    inline: true,
-    on: 'click',
-    popup: $('.epsg.popup'),
-    position: 'top left',
-    variation: 'tiny'
+    inline    : true,
+    on        : 'click',
+    popup     : $('.epsg.popup'),
+    position  : 'top left',
+    variation : 'tiny'
 //  boundary: '.sidebar-panel-body'
 });
 
@@ -31,9 +31,9 @@ function closeAllPanels() {
 $('.open-panel').click(function () {
     // open sidebar
     $('.ui.sidebar').sidebar({
-            transition: 'overlay',
-            dimPage: false,
-            closable: false,
+            transition : 'overlay',
+            dimPage    : false,
+            closable   : false,
         })
         .sidebar('show');
 
@@ -87,11 +87,10 @@ $('#zoom-out').click(function () {
 });
 
 
-$('.ui.basic.modal')
-    .modal({
-        closable: false       
-    })
-;
+$('.ui.basic.modal').modal({
+    closable  : false,
+    onApprove : getGeoTiffs();
+});
     
 
 

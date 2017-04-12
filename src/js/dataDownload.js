@@ -6,11 +6,9 @@ $('.download-draw').click(function() {
         $('.ui.basic.modal .icon.header').html('<i class="warning sign icon"></i>' +
                                                lyrCount + ' Layers Selected');
         $('.ui.basic.modal').modal('show');
+    } else {
+       getGeoTiffs();
     }
-    if (drawCoords !== null)
-        getGeoTiffs(drawCoords);        
-     else 
-        getGeoTiffs(bboxCoords);
 });
 
 
@@ -27,7 +25,14 @@ function getSelectedLayers() {
 };
 
 
-function getGeoTiffs(extentData) {
+function getGeoTiffs() {
+   
+    var extentData;    
+    if (drawCoords !== null)
+        extentData = drawCoords;        
+    else 
+        extentData = bboxCoords;
+    
     var layers = getSelectedLayers();
     console.log(layers, extentData, selectType);
     
