@@ -1,9 +1,11 @@
  /****************************  Add user defined bbox draw *****************************/
         
+// Set this out for later use
+var bboxCoords;
         
 // Validate user inputs, display any warnings, then on success
 // add a polygon from the Bounding Box user input
-//        
+//
 function addUsersCoords() {
     source.clear();
     var minX, minY, maxX, maxY, epsg, error, coords;
@@ -33,7 +35,10 @@ function addUsersCoords() {
         }
     }
 
-    if (error == 0) {                
+    if (error == 0) {
+        
+        // Create a new feature with the users bbox input then
+        // try and add it to the map, or catch the error
         var polygon = new ol.Feature({
             geometry: new ol.geom.Polygon([
                 [
@@ -63,6 +68,7 @@ function addUsersCoords() {
             var extent = vectorDraw.getSource().getExtent();
             map.getView().fit(extent, map.getSize());
             lastFeature = polygon;
+            bboxCoords = coords;
             $('.bbox-form').removeClass('warning');
             $('.download-draw').removeClass('disabled');
         }
@@ -78,4 +84,10 @@ function addUsersCoords() {
 $('.preview-bbox').click( function(){
     $('.drawing-dropdown').dropdown('set selected', "None");
     addUsersCoords();
+});
+
+
+// close the warning on the bbox
+$('.bbox-form .message .close').on('click', function() {
+    $('.bbox-form').removeClass('warning');
 });

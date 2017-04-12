@@ -3,7 +3,7 @@
        
 
 // Setup some globals and fetch the selected draw tool
-var draw, lastFeature, newCoord,
+var draw, lastFeature, drawCoords = null,
     selectType = $('.drawing-dropdown').dropdown('get value');
 
 
@@ -65,7 +65,7 @@ function addInteraction() {
                     removeLastFeature();                    
             }
             lastFeature = e.feature;
-            getDrawingExtent();
+            displayDrawingExtent();
             clearBBoxErrors();
         });
 
@@ -74,7 +74,7 @@ function addInteraction() {
         
     } else {
         source.clear();
-        newCoord = null;
+        drawCoords = null;
         lastFeature = undefined;
         $('.coord-box').html(" - - &emsp; - -");
 //        $('.bbox').val($(this).attr('placeholder'));
@@ -115,32 +115,33 @@ function clearBBoxErrors() {
 // Fetch the extent of any drawing made on the map, reproject it
 // to WGS84, and display the coords for the user
 //
-function getDrawingExtent() {  
+function displayDrawingExtent() {  
     if (lastFeature !== undefined) { 
         var html,             
             extent = lastFeature.getGeometry().getExtent();
         
-        newCoord = ol.proj.transformExtent([extent[0], 
-                                            extent[1], 
-                                            extent[2], 
-                                            extent[3]], 
-                                           'EPSG:3857', 'EPSG:4326');
+        drawCoords = ol.proj.transformExtent([extent[0], 
+                                              extent[1], 
+                                              extent[2], 
+                                              extent[3]], 
+                                             'EPSG:3857', 'EPSG:4326');
         
         if (selectType == "Point") {
             html = '<div class="ui label">' +
                     '<i class="checkmark icon"></i> Extent in WGS84: ' +
                     '<div class="coord-box detail">' + 
-                        newCoord[0].toFixed(2) + ', ' + 
-                        newCoord[1].toFixed(2) +
+                        drawCoords[0].toFixed(2) + ', ' + 
+                        drawCoords[1].toFixed(2) +
                    '</div></div>';
+            drawCoords.splice(0,2);
         } else {
             html = '<div class="ui label">' +
                     '<i class="checkmark icon"></i> Extent in WGS84: ' +
                     '<div class="coord-box detail">' + 
-                        newCoord[0].toFixed(2) + ', ' + 
-                        newCoord[1].toFixed(2) + '&emsp;' +
-                        newCoord[2].toFixed(2) + ', ' + 
-                        newCoord[3].toFixed(2) +
+                        drawCoords[0].toFixed(2) + ', ' + 
+                        drawCoords[1].toFixed(2) + '&emsp;' +
+                        drawCoords[2].toFixed(2) + ', ' + 
+                        drawCoords[3].toFixed(2) +
                    '</div></div>';
         }
         

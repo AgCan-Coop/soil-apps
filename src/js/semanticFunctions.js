@@ -1,4 +1,3 @@
-/****************************  Semantic-UI jQuery support *****************************/
 
 /* 
 
@@ -6,6 +5,7 @@ Semantic UI dependency code works in conjunction with class definitions
 to generate animation and user interaction with classes
 
 */
+
 
 // Gives us tooltips on buttons and info popups
 $('.ui.button').popup();
@@ -86,7 +86,15 @@ $('#zoom-out').click(function () {
     map.getView().setResolution(map.getView().getResolution() * 2);
 });
 
-// close the warning on the bbox
-$('.bbox-form .message .close').on('click', function() {
-    $('.bbox-form').removeClass('warning');
-});
+
+$('.ui.basic.modal')
+    .modal({
+        closable: false       
+    })
+;
+    
+
+
+
+
+
