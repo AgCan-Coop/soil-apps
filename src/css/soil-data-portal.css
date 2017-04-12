@@ -185,7 +185,7 @@ Small tweeks
     padding-left: 20px;
 }
 
-.accordion-margin {
+.top-margin {
     margin-top: 10px;
 }
 
@@ -219,6 +219,11 @@ Small tweeks
     margin-bottom: 14px;
 }
 
-#dataInfo {
+.text-align {
     text-align: center;
+}
+
+.download-draw {
+    margin-left: 14px !important;
+    margin-top: 10px !important;
 }
