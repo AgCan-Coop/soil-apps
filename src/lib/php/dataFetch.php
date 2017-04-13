@@ -14,9 +14,10 @@ FB::trace('Simple Trace');
 */
 
 // Include the FirePHP debugging script
-require('../lib/fb/FirePHPCore/fb.php');
+require('../../lib/fb/fb.php');
 
-FB::log('script fires');
 
+fb::log('script fires');
+echo("fires");
 
 ?>
