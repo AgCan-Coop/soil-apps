@@ -29,7 +29,7 @@
      <div id="sidebar" class="ui very wide right sidebar">
         <div class="sidemenu-top ui fixed large black vertical icon buttons">
             <button id="layer-options" class="open-panel ui button" data-content="Layer options" data-variation="mini inverted" data-position="left center"><i class="list layout icon"></i></button>
-            <button id="drawing-tools" class="open-panel ui button" data-content="Drawing tools" data-variation="mini inverted" data-position="left center"><i class="edit icon"></i></button>
+            <button id="process-tools" class="open-panel ui button" data-content="Data Process" data-variation="mini inverted" data-position="left center"><i class="settings icon"></i></button>
             <button id="upload-shapefile" class="open-panel ui button" data-content="Upload shapefile" data-variation="mini inverted" data-position="left center"><i class="upload icon"></i></button>
             <button id="download-data" class="open-panel ui button" data-content="Download data" data-variation="mini inverted" data-position="left center"><i class="download icon"></i></button>
             <button id="help" class="open-panel ui button" data-content="Help" data-variation="mini inverted" data-position="left center"><i class="help circle icon"></i></button>
@@ -67,75 +67,116 @@
             </div>
             
             <!-- Plant Disease Model -->
-            <div id="drawing-tools-panel" class="drawing-tools-panel info-panel">
+            <div id="process-tools-panel" class="process-tools-panel info-panel">
                 <div class="sidebar-panel-heading">
                     <h4 class="sidebar-panel-title">
                         <span>Plant Diease </span>
                     </h4>
                     <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
                 </div>
+
+
                 <div class="ui top attached tabular menu">
 
-                <div class="active item">
+                <div class="active item" data-tab="first" style="cursor:pointer">
                   <i class ="mouse pointer icon"></i>
                     Step 1: Select 
                   </div>
 
-                <div class="item">
+                <div class="item" data-tab="second" style="cursor:pointer">
                   <i class ="configure icon"></i>
                     Step 2: Process 
                   </div>
 
-                <div class="item">
+                <div class="item" data-tab="third" style="cursor:pointer">
                   <i class ="database icon"></i>
                     Step 3: Download 
                   </div>
                 </div>
-                <div id ="step1" class="ui bottom attached active tab segment">
-                                           
-                    <h3>  Select an Area of Interest by Clicking </h3> 
 
-                <form class="form-inline">
-                  <label>Action type &nbsp;</label>
-                    <select id="type" class="form-control">
-                      <option value="singleclick" selected>Click</option>
-                      <option value="pointermove">Hover</option>
-                    </select></br>
-                  <span id="status">&nbsp;0 selected features</span>
-                </form>                    
+
+                <div data-tab= "first" class="ui bottom attached active tab segment">
+                                           
+                    <h3>  Select an Area of Interest by Clicking </h3>                    
 
                 <div class="ui segment">  
                 <span class="title-main"class="ui header">Click submit when finished</span>
                 <div>
                 <br>
-                <button class="positive ui button">Submit</button>
-                </div> 
-               
+                <button id ="runPython" class="positive ui button">Submit</button>
+                </div>
+                <div id="tifResponse1"></div>
+                <div id="button1" class=""></div>
+                <div id="tifResponse2"></div>
+                <div id="button2"></div> 
                 </div>
                 </div>
 
-               <div id ="step2" class="ui bottom attached tab segment">
+               <div data-tab= "second" class="ui bottom attached tab segment">
                                            
-                    <h3>  Select an Area of Interest by Clicking </h3>             
+                    <h3>  Enter required Data </h3>             
 
 
                 <div class="ui segment">  
-                <span class="title-main"class="ui header">Click submit when finished</span>
-                <div>
-                <br>
-                <button class="positive ui button">Submit</button>
-                </div> 
-               
-                </div>
+                    <div class="ui right labeled input">
+                        <input placeholder ="Enter rainfall.." type ="text">
+                        <div class="ui basic label">
+                            mm
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+
+                    <div class="ui right labeled input">
+                        <input placeholder ="Enter temperature.." type ="text">
+                        <div class="ui basic label">
+                            °C
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+
+                    <div class="ui selection dropdown">
+                          <input name="Cropdst" type="hidden">
+                          <i class="dropdown icon"></i>
+                          <div class="default text">Crop Density </div>
+                          <div class="menu" id="CropDst">
+                            <div class="item" data-value="0">Low</div>
+                            <div class="item" data-value="1">Medium</div>
+                            <div class="item" data-value="2">High</div>
+                          </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="ui selection dropdown">
+                          <input name="RegionRisk" type="hidden">
+                          <i class="dropdown icon"></i>
+                          <div class="default text">Regional Risk of Apothecial development </div>
+                          <div class="menu" id="RegionRisk">
+                            <div class="item" data-value="0">Low</div>
+                            <div class="item" data-value="1">Medium</div>
+                            <div class="item" data-value="2">High</div>
+                          </div>
+                    </div>  
+                    <br>
+                    <br>
+
+                    <span class="title-main"class="ui header">Click submit when finished</span>
+                    <div>
+                    <br>
+                    <button class="positive ui button">Submit</button>
+                    </div> 
+
+                    </div>
                 </div>
 
 
-               <div id ="step3" class="ui bottom attached tab segment">
+               <div data-tab= "third"  class="ui bottom attached tab segment">
                                            
                     <h3>  Select an Area of Interest by Clicking </h3>                      
 
                 <div class="ui segment">  
-                <span class="title-main"class="ui header">Click submit when finished</span>
+                <span class="title-main"class="ui header">Click submit when ready</span>
                 <div>
                 <br>
                 <button class="positive ui button">Submit</button>
@@ -363,6 +404,13 @@
         to generate animation and user interaction with classes
          
         */
+
+
+
+        // initialize the tabs for data process
+        $(' .menu .item')
+            .tab()
+            ;
         
 
         // Gives us tooltips on buttons and info popups
@@ -517,22 +565,6 @@
             target: 'map',
             view: view
         
-        // // Define source for multiple use
-        // //      
-        
-        // // Create map, point to target div
-        // //
-        // var map = new ol.Map({
-        //     controls: [scaleline, attr],
-        //     interactions: ol.interaction.defaults({
-        //         doubleClickZoom: false
-        //     }),
-        //     layers: [OSM_layer, vectorDraw],
-        //     target: 'map',
-        //     view: view
-
-                // Create scaleline control
-        //
  
         });
        // select region from JSON vector data            
@@ -545,7 +577,7 @@
     // select interaction working on "singleclick"
     var selectSingleClick = new ol.interaction.Select();
 
-    // select interaction working on "click"
+
     var selectClick = new ol.interaction.Select({
       condition: ol.events.condition.click
     });
@@ -555,90 +587,58 @@
       condition: ol.events.condition.pointerMove
     });
 
-    var selectElement = document.getElementById('type');
-
     var changeInteraction = function() {
       if (select !== null) {
         map.removeInteraction(select);
       }
-      var value = selectElement.value;
-      if (value == 'singleclick') {
-        select = selectSingleClick;
-      } else if (value == 'pointermove') {
-        select = selectPointerMove;
-      } else {
-        select = null;
-      }
-
+      select = selectClick;
 
       if (select !== null) {
         map.addInteraction(select);
         select.on('select', function(e){
         console.log(e);
 
-        document.getElementById('status').innerHTML = '&nbsp;' +
-              e.target.getFeatures().getLength() +
-              ' selected features (last operation selected ' + e.selected.length +
-              ' and deselected ' + e.deselected.length + ' features)';
+        // document.getElementById('status').innerHTML = '&nbsp;' +
+        //       e.target.getFeatures().getLength() +
+        //       ' selected features (last operation selected ' + e.selected.length +
+        //       ' and deselected ' + e.deselected.length + ' features)';
 
-            console.log(e.selected[0].c.target.v),
-            coords = e.selected[0].c.target.v;
+            console.log(e.selected[0].c.target.s),
+            coords = e.selected[0].c.target.s;
             });
           }
         };
 
-
+        console.log(coords);
         $("#runPython").click(function()
           {
-          var floweringDate = document.getElementById("floweringDate").value;
-          console.log(floweringDate);
-          var CropDensity = document.getElementById("CropDensity").value;
+          // var floweringDate = document.getElementById("floweringDate").value;
+          // console.log(floweringDate);
+          // var CropDensity = document.getElementById("CropDensity").value;
 
-          $.post("../PHP/Manitoba_riskAnalysis.php", 
+          $.post("../lib/php/Manitoba_riskAnalysis.php", 
           {    
                minX: String(coords[0]),
                minY: String(coords[1]),
                maxX: String(coords[2]),
                maxY: String(coords[3]),
-               CropDensity:CropDensity
+               // CropDensity:CropDensity
 
           })
           .done(function(data, status)
           {
               $("#status").html("done");
-              data = jQuery.parseJSON(data);
-              console.log(data);
-
-              if (data[0] && data[1] )
-              {
-                $("#tifResponse1").html('<a href="' + data[0] + '" download=>Download Original Data</a>').appendTo('#button1');
+              // data = jQuery.parseJSON(data);
+              // console.log(data);
+//&& data[1]
+              // if (data[0] )
+              // {
+              //   $("#tifResponse1").html('<a href="' + data[0] + '" download=>Download Original Data</a>').appendTo('#button1');
               
-                $("#tifResponse2").html('<a href="' + data[1] + '" download=>Download RiskMap</a>').appendTo('#button2');
-              }
+              //   // $("#tifResponse2").html('<a href="' + data[1] + '" download=>Download RiskMap</a>').appendTo('#button2');
+              // }
           })
-
-          var elem = document.getElementById("myBar");   
-          var width = 10;
-          var id = setInterval(frame, 10);
-          function frame() {
-            if (width >= 100) {
-              clearInterval(id);
-            } else {
-              width++; 
-              elem.style.width = width + '%'; 
-              elem.innerHTML = width * 1  + '%';
-            }
-          }
-
           });
-
-    //     });
-    //   }
-    // };
-      /**
-       * onchange callback on the select element.
-       */
-      selectElement.onchange = changeInteraction;
       changeInteraction();
 
 
