@@ -71,9 +71,10 @@ function PostGeoServer_soil($minX,$minY,$maxX,$maxY)
 
 	else
 	{
-		$filesave = "../temp/data-download.tif";
+		$filesave = "../../temp/data-download.tif";
 		file_put_contents($filesave, $ch_result_soil);
-		// return ($filesave);
+		$download_path = "http://localhost/web_gis/src/temp/data-download.tif";
+		return ($download_path);
 	}
 
 }
@@ -120,7 +121,7 @@ function PostGeoServer_soil($minX,$minY,$maxX,$maxY)
 $postStatus = PostGeoServer_soil($minX,$minY,$maxX,$maxY);
 // $CropDensity = runPython();
 
-// echo json_encode(array($postStatus,$CropDensity));
+echo json_encode(array($postStatus,$CropDensity));
 
 // $clean = shell_exec('python3 ../SCRIPT/python/cleanup.py');
 

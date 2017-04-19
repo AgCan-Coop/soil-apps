@@ -105,8 +105,6 @@
                 <br>
                 <button id ="runPython" class="positive ui button">Submit</button>
                 </div>
-                <div id="tifResponse1"></div>
-                <div id="button1" class=""></div>
                 <div id="tifResponse2"></div>
                 <div id="button2"></div> 
                 </div>
@@ -167,6 +165,7 @@
                     <button class="positive ui button">Submit</button>
                     </div> 
 
+
                     </div>
                 </div>
 
@@ -181,7 +180,10 @@
                 <br>
                 <button class="positive ui button">Submit</button>
                 </div> 
-               
+
+                <div id="tifResponse1"></div>
+                <div id="button1" class=""></div> 
+                            
                 </div>
                 </div>               
 
@@ -628,15 +630,15 @@
           .done(function(data, status)
           {
               $("#status").html("done");
-              // data = jQuery.parseJSON(data);
+              data = jQuery.parseJSON(data);
               // console.log(data);
 //&& data[1]
-              // if (data[0] )
-              // {
-              //   $("#tifResponse1").html('<a href="' + data[0] + '" download=>Download Original Data</a>').appendTo('#button1');
+              if (data[0] )
+              {
+                $("#tifResponse1").html('<a href="' + data[0] + '" download=>Download Original Data</a>').appendTo('#button1');
               
-              //   // $("#tifResponse2").html('<a href="' + data[1] + '" download=>Download RiskMap</a>').appendTo('#button2');
-              // }
+                // $("#tifResponse2").html('<a href="' + data[1] + '" download=>Download RiskMap</a>').appendTo('#button2');
+              }
           })
           });
       changeInteraction();
