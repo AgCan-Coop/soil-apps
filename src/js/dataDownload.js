@@ -35,16 +35,16 @@ function getGeoTiffs() {
         extentData = bboxCoords;   
     console.log(layers, extentData, selectType);
     
-//    $.post("../lib/php/someFile.php", 
-//    {
-//        selectType : selectType,
-//        extentData : extentData,
-//        layers     : layers
-//    })
-//    .done(function(data, status) {
-//        console.log
-//    })
-//    
+    $.post("../lib/php/dataFetch.php", 
+    {
+        selectType : selectType,
+        extentData : extentData,
+        layers     : layers
+    })
+    .done(function(data, status) {
+        console.log
+    })
+    
     
     
 };
