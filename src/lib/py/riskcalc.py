@@ -14,7 +14,7 @@ import numpy as np
 
 
 
-file1 = "/var/www/html/index/temp/data-download.tif"
+file1 = "/var/www/html/web_gis/src/temp/data-download.tif"
 
 #Open dataset
 bandNum = 1
@@ -28,22 +28,22 @@ band1 = dis1.GetRasterBand(bandNum)
 data1 = BandReadAsArray(band1)
 x = data1.shape[0]
 y = data1.shape[1]
-print (x)
-print (y)
+# print (x)
+# print (y)
 data2 = np.empty((x,y)) # numpy.zeros initialize the data, slower
 
 data2.fill(10)
 
-print (data1.shape)
-print (data2.shape)
-print (data1)
-print (data2)
+# print (data1.shape)
+# print (data2.shape)
+# print (data1)
+# print (data2)
 
-print (dis1.RasterXSize)
+# print (dis1.RasterXSize)
 
 # Write to the out file
 driver = gdal.GetDriverByName("GTiff")
-disOut = driver.Create("/var/www/html/index/temp/CropDensity.tif", dis1.RasterXSize, dis1.RasterYSize, 1, band1.DataType)
+disOut = driver.Create("/var/www/html/web_gis/src/temp/CropDensity.tif", dis1.RasterXSize, dis1.RasterYSize, 1, band1.DataType)
 disOut.SetGeoTransform(dis1.GetGeoTransform())
 disOut.SetProjection(dis1.GetProjection())                #set up the cell size and projection
 CopyDatasetInfo = (dis1, disOut)   

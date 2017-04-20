@@ -103,10 +103,8 @@
                 <span class="title-main"class="ui header">Click submit when finished</span>
                 <div>
                 <br>
-                <button id ="runPython" class="positive ui button">Submit</button>
-                </div>
-                <div id="tifResponse2"></div>
-                <div id="button2"></div> 
+                <button id ="AoiData" class="positive ui button">Submit</button>
+                </div> 
                 </div>
                 </div>
 
@@ -126,7 +124,7 @@
                     <br>
 
                     <div class="ui right labeled input">
-                        <input placeholder ="Enter temperature.." type ="text">
+                        <input id ="temperature" placeholder ="Enter temperature.." type ="text">
                         <div class="ui basic label">
                             °C
                         </div>
@@ -135,10 +133,10 @@
                     <br>
 
                     <div class="ui selection dropdown">
-                          <input name="Cropdst" type="hidden">
+                          <input id="Cropdst" type="hidden">
                           <i class="dropdown icon"></i>
                           <div class="default text">Crop Density </div>
-                          <div class="menu" id="CropDst">
+                          <div class="menu">
                             <div class="item" data-value="0">Low</div>
                             <div class="item" data-value="1">Medium</div>
                             <div class="item" data-value="2">High</div>
@@ -162,7 +160,7 @@
                     <span class="title-main"class="ui header">Click submit when finished</span>
                     <div>
                     <br>
-                    <button class="positive ui button">Submit</button>
+                    <button id ="ProcessData" class="positive ui button">Submit</button>
                     </div> 
 
 
@@ -172,18 +170,20 @@
 
                <div data-tab= "third"  class="ui bottom attached tab segment">
                                            
-                    <h3>  Select an Area of Interest by Clicking </h3>                      
+                    <h3>  Download Datasets  </h3>                      
 
                 <div class="ui segment">  
-                <span class="title-main"class="ui header">Click submit when ready</span>
-                <div>
-                <br>
-                <button class="positive ui button">Submit</button>
-                </div> 
 
                 <div id="tifResponse1"></div>
-                <div id="button1" class=""></div> 
-                            
+                <div id="button1" class=""></div>
+                <br>
+                <div id="tifResponse2"></div>
+                <div id="button2" class=""></div>
+                <br>
+                <div id="tifResponse3"></div>
+                <div id="button3" class=""></div> 
+                <br>
+                        
                 </div>
                 </div>               
 
@@ -506,7 +506,7 @@
           //change projection to geoserver's projection
           projection: "EPSG:4326",
           center: [-98.5284468774974,50.71391708013823],
-                zoom: 7
+                zoom: 8
         });
 
         // creating a openlayer base map
@@ -610,21 +610,19 @@
             });
           }
         };
-
+/****************************  Download data locally     *****************************/
         console.log(coords);
-        $("#runPython").click(function()
+        $("#AoiData").click(function()
           {
           // var floweringDate = document.getElementById("floweringDate").value;
           // console.log(floweringDate);
-          // var CropDensity = document.getElementById("CropDensity").value;
 
-          $.post("../lib/php/Manitoba_riskAnalysis.php", 
+          $.post("../lib/php/riskDownload.php", 
           {    
                minX: String(coords[0]),
                minY: String(coords[1]),
                maxX: String(coords[2]),
                maxY: String(coords[3]),
-               // CropDensity:CropDensity
 
           })
           .done(function(data, status)
@@ -633,19 +631,46 @@
               data = jQuery.parseJSON(data);
               // console.log(data);
 //&& data[1]
-              if (data[0] )
+              if (data[0]&&data[1])
               {
-                $("#tifResponse1").html('<a href="' + data[0] + '" download=>Download Original Data</a>').appendTo('#button1');
-              
-                // $("#tifResponse2").html('<a href="' + data[1] + '" download=>Download RiskMap</a>').appendTo('#button2');
+                $("#tifResponse1").html('<a href="' + data[0] + '" class="button" download=>Download Soil Data</a>').appendTo('#button1');
+
+                $("#tifResponse2").html('<a href="' + data[1] + '" class="button" download=>Download Cropping History Data</a>').appendTo('#button2');
               }
           })
           });
       changeInteraction();
 
 
+/****************************  Process data using model     *****************************/
 
-        
+
+        $("#ProcessData").click(function()
+          {
+          // var floweringDate = document.getElementById("floweringDate").value;
+          // console.log(floweringDate);
+          var CropDensity = document.getElementById("Cropdst").value;
+
+          $.post("../lib/php/riskAnalysis.php", 
+          {    
+
+               CropDensity:CropDensity
+          })
+          .done(function(data, status)
+          {
+              $("#status").html("done");
+              data = jQuery.parseJSON(data);
+              // console.log(data);
+//&& data[1]
+              if (data)
+              {
+                $("#tifResponse3").html('<a href="' + data + '" class="button" download=>Download risk Data</a>').appendTo('#button3');
+              }
+          })
+          });
+
+
+
         /****************************  Add Map Drawing Tools      *****************************/
 
        

@@ -55,7 +55,7 @@ curl_close($ch_soil);
 $filesave_cropping_history = "../../temp/cropping_history.tif";
 file_put_contents($filesave_cropping_history, $ch_result_cropping_history);
 
-
+$cropping_path = "http://localhost/web_gis/src/temp/cropping_history.tif";
 
 
 function PostGeoServer_soil($minX,$minY,$maxX,$maxY)
@@ -98,50 +98,10 @@ function PostGeoServer_soil($minX,$minY,$maxX,$maxY)
 
 }
 
-function runPython()
-{
-    $CropDensity = $_REQUEST['CropDensity'];        
-    FB::info($CropDensity);
-
-    if ($CropDensity=='low')
-    {
-    	$CropDensity = 10;
-    }
-    else if ($CropDensity =='normal')
-    {
-    	$CropDensity = 20;
-    }
-    else 
-    {
-    	$CropDensity = 30;
-    }
-
-    FB::info($CropDensity);
-
-    FB::info(gettype($CropDensity));
-    $CropDensity = (int)$CropDensity;
-    FB::info(gettype($CropDensity));
-    FB::info($CropDensity);
-
-    $temp = json_encode($CropDensity);
-
-    // echo $temp;
-    $result = shell_exec('python3 ../py/riskcalc.py ' ."'".$temp."'");
-    $result = shell_exec('python3 ../py/raster_calc.py '.'localhost/web_gis/src/temp/CropDensity.tif -B /var/www/html/web_gis/src/temp/data-download.tif --outfile=/var/www/html/web_gis/src/temp/riskmap1.tif --calc="A+B"');
-    $result = shell_exec('python3 ../py/raster_calc.py '.'-A /var/www/html/web_gis/src/temp/cropping_history.tif -B /var/www/html/web_gis/src/temp/riskmap1.tif --outfile=/var/www/html/web_gis/src/temp/riskmap.tif --calc="A+B"');
-    FB::info($result);
-    $riskmap_save = "../../riskmap.tif";
-    $riskmap_path = "http://localhost/web_gis/src/temp/riskmap.tif"
-    return ($riskmap_save);
-}
-
-
-
 
 $postStatus = PostGeoServer_soil($minX,$minY,$maxX,$maxY);
-$CropDensity = runPython();
 
-echo json_encode(array($postStatus,$CropDensity));
+echo json_encode(array($postStatus,$cropping_path));
 
 // $clean = shell_exec('python3 ../SCRIPT/python/cleanup.py');
 
