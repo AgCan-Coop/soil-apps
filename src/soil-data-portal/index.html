@@ -184,7 +184,7 @@
                             
                         </form>
                     </div> 
-                    <div class="download-draw ui labeled button disabled" tabindex="0">
+                    <div id="download-draw" class="download-draw ui labeled button disabled" tabindex="0">
                         <div class="ui black button">
                             <i class="download icon"></i> Download
                         </div>
@@ -233,7 +233,7 @@
                         </div>
                         <div class="form-buttons two fields">
                             <div class="field">
-                                <div class="ui blue fluid labeled icon disabled button">
+                                <div id="download-shapefile" class="ui blue fluid labeled icon disabled button">
                                     Download Data
                                     <i class="download icon"></i>
                                 </div>
@@ -280,9 +280,7 @@
 
     <div class="map pusher">
         <div class="ui basic modal">
-            <div class="ui icon header">
-                <i class="warning sign icon"></i>
-                Many Layers Selected
+            <div class="ui icon header">                
             </div>
             <div class="content">
                 <p>Selecting this many layers to subset can result in long processing times, particularly when cutting large areas. Are you sure you want to proceed?</p>
@@ -322,7 +320,7 @@
         // Create scaleline control
         //
         var scaleline = new ol.control.ScaleLine();
-        var attr = new ol.control.Attribution();
+//        var attr = new ol.control.Attribution();
         
         // Create custom style 
         //
@@ -358,7 +356,7 @@
         // Create map, point to target div
         //
         var map = new ol.Map({
-            controls: [scaleline, attr],
+            controls: [scaleline],  //, attr
             interactions: ol.interaction.defaults({
                 doubleClickZoom: false
             }),

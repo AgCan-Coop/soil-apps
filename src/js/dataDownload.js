@@ -1,22 +1,33 @@
 /****************************  Fetch GeoTiffs from Drawing AOI  ***********************/
 
-$('.download-draw').click(function() {
+// Initiate download on click, throw warning if layer count is too high
+$('.download-draw, .download-shapefile').click(function(e) {
     var lyrCount = getSelectedLayers().length;
-    if (lyrCount == 0) {
-        $('.ui.basic.modal .icon.header').html('<i class="warning sign icon"></i>' +
-                                               lyrCount + ' Layers Selected');
+    console.log(e)
+    
+    if (lyrCount == 0) { 
+        
+        if (e.currentTarget.id == "download-draw"){ 
+            
+            $('.ui.basic.modal .icon.header').html('<i id="modal-draw" class="warning sign icon"></i>' + lyrCount + ' Layers Selected');            
+        } else {
+            
+            $('.ui.basic.modal .icon.header').html('<i id="modal-shapefile" class="warning sign icon"></i>' + lyrCount + ' Layers Selected');
+        }
+        
         $('.ui.basic.modal').modal('show');
-    } else {
-       getGeoTiffs();
-    }
+        
+    } else 
+        getGeoTiffs(e);    
 });
 
 
-
+// Fetch list of currently selected layers for download
 function getSelectedLayers() {     
     
     var selectedLayers = [],
         featureExtent; 
+    
     $('.selected-layers-list .content').each(function(){
         selectedLayers.push(this.innerText);
     })
@@ -24,16 +35,26 @@ function getSelectedLayers() {
 };
 
 
-function getGeoTiffs() {
+// Pass data to php script and return process geotiffs
+function getGeoTiffs(e) {
    
-    var extentData,
-        layers = getSelectedLayers();
+    var layers = getSelectedLayers(),
+        extentData, 
+        id; 
     
-    if (drawCoords !== null)
-        extentData = drawCoords;        
-    else 
-        extentData = bboxCoords;   
-    console.log(layers, extentData, selectType);
+    id = (e instanceof jQuery) ? $('.warning.sign.icon').attr('id') : e.currentTarget.id;    
+
+    if (id == "download-draw" || id == "modal-draw") {        
+        
+        if (drawCoords !== null)
+            extentData = drawCoords;        
+        else 
+            extentData = bboxCoords;  
+        
+    } else {
+       // add shapefile's feature extent data
+    }
+
     
     $.post("../lib/php/dataFetch.php", 
     {
@@ -42,9 +63,8 @@ function getGeoTiffs() {
         layers     : layers
     })
     .done(function(data, status) {
-        console.log
+//        console.log
     })
-    
     
     
 };

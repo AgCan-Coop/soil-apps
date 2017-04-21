@@ -91,8 +91,8 @@ $('#zoom-out').click(function () {
 $('.ui.basic.modal').modal({
     closable  : false,
 //    inverted  : true,
-    onApprove : function() {
-        getGeoTiffs();
+    onApprove : function(e) {
+        getGeoTiffs(e);
     }
 });
     
