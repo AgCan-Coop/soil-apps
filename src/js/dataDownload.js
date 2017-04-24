@@ -63,7 +63,7 @@ function getGeoTiffs(e) {
         layers     : layers
     })
     .done(function(data, status) {
-//        console.log
+        console.log("Response:  ", status)
     })
     
     
