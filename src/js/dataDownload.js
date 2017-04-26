@@ -55,6 +55,7 @@ function getGeoTiffs(e) {
        // add shapefile's feature extent data
     }
 
+    // *** Handle point download right here!
     
     $.post("../lib/php/dataFetch.php", 
     {

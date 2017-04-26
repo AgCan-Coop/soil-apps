@@ -26,13 +26,10 @@ $layers = $_REQUEST["layers"];
 function ping($url) {
     $pingResult = exec("ping -c 1 $url", $outcome, $status);
     if (0 == $status) {
-        fb::log($status);
-        fb::log($outcome);
-        $status = "alive";
+        return("alive");
     } else {
-        $status = "dead";
+        return("dead");
     }
-    return($status);
 }
 
 
@@ -67,22 +64,43 @@ function curlPostGeoServer($layer, $extentData) {
                   . "\n\t " . __FILE__ . "\n\t Request XML error: POST request returned without a valid GeoTIFF.\n\t Refer to XML for info:\n\t XML Response:\n\t url: {$url}\n\t xml:\n\t {$ch_result} ";
         
         file_put_contents("error/errorlog.txt ", $errMsg, FILE_APPEND); 
-        return("*GeoTiff save failed - Contact Server Administrator "); 
+        return("fail"); 
         
     } else { 
         // Apply time-stamp to file and save 
-        $fileName = "temp/" . $layer . "_" . date("This") . ".tif ";         
+        $fileName = "temp/" . $layer . "_" . date("This") . ".tif";         
         file_put_contents($fileName, $ch_result); 
-        return($fileName); 
+        return("../php/" . $fileName); 
     } 
-    return($url);
-    
+//    return($url);    
 } // close curlPostGeoServer()
 
-$func = curlPostGeoServer($layers[0], $extentData);
 
-fb::log($layers);
-fb::log(json_encode(array($selectType, $extentData[0], $layers, $func)));
+if (ping("ulysses.agr.gc.ca") == "alive") {
+    fb::log("ping alive");
+    
+    $extent = implode(",", $extentData);
+    fb::log($extent);
+    foreach ($layers as $layer) {
+        fb::log("file");
+        $file = curlPostGeoServer($layer, $extentData);
+
+        if (strpos($file, "fail") !== false) {
+            // return geoserver fail error, check error log
+            fb::error("strpos fail");
+        } else {
+            fb::log($extent);
+            exec("python3 ../py/createMetaData.py $extent $file");            
+        }
+    }
+} else {
+    // send server down error
+    fb::log("ping dead");
+}
+
+
+
+fb::log(json_encode(array($selectType, $extentData, $layers, $func)));
 
 
 
