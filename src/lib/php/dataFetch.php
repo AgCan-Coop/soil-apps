@@ -213,7 +213,7 @@ $msg = "METADATA DOCUMENT\n" .
 
 // execute the script, catch the response, send it to the client
 $result = dataFetch($url, $extent, $extentData, $zipname, $metaDoc, $msg, $layers);
-echo json_encode(array($result));
+echo json_encode(array($result, $zipname));
 
 
 

@@ -10,14 +10,16 @@ $('.download-draw, .download-shapefile').click(function(e) {
         if (e.currentTarget.id == "download-draw"){ 
             
             $('.ui.basic.modal .icon.header').html('<i id="modal-draw" class="warning sign icon"></i>' + lyrCount + ' Layers Selected');            
-        } else {
-            
+        } 
+        else 
+        {            
             $('.ui.basic.modal .icon.header').html('<i id="modal-shapefile" class="warning sign icon"></i>' + lyrCount + ' Layers Selected');
         }
         
         $('.ui.basic.modal').modal('show');
         
-    } else 
+    }
+    else 
         getGeoTiffs(e);    
 });
 
@@ -51,7 +53,9 @@ function getGeoTiffs(e) {
         else 
             extentData = bboxCoords;  
         
-    } else {
+    } 
+    else 
+    {
        // add shapefile's feature extent data
     }
 
@@ -64,7 +68,24 @@ function getGeoTiffs(e) {
         layers     : layers
     })
     .done(function(data, status) {
-        console.log("Response:  ", status)
+        data = jQuery.parseJSON(data);
+        if (data[0] !== "fail") {
+            // do good stuff
+            
+            $("#data-link").attr("href", "../lib/php/" + data[1]);
+            $("#data-ready").slideDown(500);
+//            $("#data-ready").html('<button class="data-ready big ui icon button orange"' +
+//                                  ' href="' + data[1] + '">' +
+//                                  '<i class="arrow circle outline down icon"></i>Ready' +
+//                                  '</button>')
+//                            .slideDown(500);
+
+        } 
+        else 
+        {
+            // do bad stuff
+        }
+        console.log("Response:  ", data, status)
     })
     
     
