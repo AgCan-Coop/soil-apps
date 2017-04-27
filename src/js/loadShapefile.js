@@ -37,17 +37,14 @@ var file;
 function loadShpZip() {            
     shapefileSource.clear();
 
-    var check,
-        encoding = ($('#options-encoding').val() == '') ? 'UTF-8' : $('#options-encoding').val(),
+    var encoding = ($('#options-encoding').val() == '') ? 'UTF-8' : $('#options-encoding').val(),
         epsg = ($('#options-epsg').val() == '') ? '4326' : $('#options-epsg').val();
 
     loadshp({
         url: file,
         encoding: encoding,
         EPSG: epsg
-    }, function(data, error){
-        console.log("data");
-        console.log(error);
+    }, function(data, error){       
         var feature = new ol.format.GeoJSON().readFeatures(data, {
             featureProjection: 'EPSG:3857'
         });
@@ -55,13 +52,8 @@ function loadShpZip() {
         shapefileLayer.set('name', file.name);
 
         var extent = shapefileLayer.getSource().getExtent();
-        map.getView().fit(extent, map.getSize());
-        check = true;
-        console.log(check);
-    });
-
-    console.log("eh?2");
-    return check;           
+        map.getView().fit(extent, map.getSize());        
+    });          
 };         
 
 // Show options and enable preview when user adds zipped file
@@ -89,14 +81,13 @@ $( '.preview-shapefile' ).click(function () {
     } else {
         dDDown.dropdown('set selected', "None");
     }
-//            try {
-//                console.log(loadShpZip());
-//                console.log("eh?3")
-//            }
-//            catch(err) {                
-//            }
     if (loadShpZip())
         console.log("success");
     else
         console.log("failed");
 });
+
+
+
+
+

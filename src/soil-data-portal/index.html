@@ -27,7 +27,8 @@
 
 <body>
 
-     <div id="sidebar" class="ui very wide right sidebar">
+     <div id="sidebar" class="ui very wide right sidebar">        
+             
         <div class="sidemenu-top ui fixed large black vertical icon buttons">
             <button id="layer-options" class="open-panel ui button" data-content="Layer options" data-variation="mini inverted" data-position="left center"><i class="list layout icon"></i></button>
             <button id="drawing-tools" class="open-panel ui button" data-content="Drawing tools" data-variation="mini inverted" data-position="left center"><i class="edit icon"></i></button>
@@ -67,7 +68,7 @@
                 </div>
             </div>
             
-            <!-- Drawing Tools -->
+            <!-- Drawing Tools --> 
             <div id="drawing-tools-panel" class="drawing-tools-panel info-panel">
                 <div class="sidebar-panel-heading">
                     <h4 class="sidebar-panel-title">
@@ -181,7 +182,7 @@
                                 </div>
                                 <div class="field"></div>
                             </div>
-                            
+
                         </form>
                     </div> 
                     <div class="ui container">
@@ -203,8 +204,8 @@
                             </a>
                         </div>
                     </div>    
-                </div>
-            </div>
+                </div>                
+            </div>    
             
             <!-- Shapefile Upload -->
             <div id="upload-shapefile-panel" class="info-panel">
@@ -287,10 +288,12 @@
             </div>
         </div>
 
+    
+        
     </div>
 
     <div class="map pusher">
-        <div class="ui basic modal">
+        <div class="count-many ui basic modal">
             <div class="ui icon header">                
             </div>
             <div class="content">
@@ -306,7 +309,25 @@
                     Yes
                 </div>                
             </div>
+        </div>   
+        
+        <div class="count-zero ui basic modal">
+            <div class="ui icon header">
+                <i class="warning sign icon"></i> You Must Select Some Layers To Proceed
+            </div>
+            <div class="content">                
+            </div>
+            <div class="actions">
+                <div class="ui green ok inverted button">                    
+                    Roger That
+                </div>                
+            </div>
+        </div>       
+        
+        <div class="data-loader ui inverted dimmer">
+            <div class="ui large text loader">Preparing files, this can take a few moments</div>
         </div>
+        
         <div id="map" class="map"></div>
     </div>
     

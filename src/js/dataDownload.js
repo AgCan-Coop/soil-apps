@@ -5,19 +5,21 @@ $('.download-draw, .download-shapefile').click(function(e) {
     var lyrCount = getSelectedLayers().length;
     console.log(e)
     
-    if (lyrCount == 0) { 
-        
-        if (e.currentTarget.id == "download-draw"){ 
-            
-            $('.ui.basic.modal .icon.header').html('<i id="modal-draw" class="warning sign icon"></i>' + lyrCount + ' Layers Selected');            
-        } 
-        else 
-        {            
-            $('.ui.basic.modal .icon.header').html('<i id="modal-shapefile" class="warning sign icon"></i>' + lyrCount + ' Layers Selected');
+    if (lyrCount == 0 || lyrCount > 6) { 
+        if (lyrCount > 6) {
+            if (e.currentTarget.id == "download-draw"){             
+                $('.count-many .icon.header').html('<i id="modal-draw" class="warning sign icon"></i>' + lyrCount + ' Layers Selected');            
+            } 
+            else 
+            {            
+                $('.count-many .icon.header').html('<i id="modal-shapefile" class="warning sign icon"></i>' + lyrCount + ' Layers Selected');
+            }        
+            $('.count-many').modal('show');
         }
-        
-        $('.ui.basic.modal').modal('show');
-        
+        else
+        {
+            $('.count-zero').modal('show');
+        }        
     }
     else 
         getGeoTiffs(e);    
@@ -39,7 +41,8 @@ function getSelectedLayers() {
 
 // Pass data to php script and return process geotiffs
 function getGeoTiffs(e) {
-   
+    $(".data-loader").addClass("active");
+    
     var layers = getSelectedLayers(),
         extentData, 
         id; 
@@ -51,8 +54,7 @@ function getGeoTiffs(e) {
         if (drawCoords !== null)
             extentData = drawCoords;        
         else 
-            extentData = bboxCoords;  
-        
+            extentData = bboxCoords;         
     } 
     else 
     {
@@ -71,7 +73,7 @@ function getGeoTiffs(e) {
         data = jQuery.parseJSON(data);
         if (data[0] !== "fail") {
             // do good stuff
-            
+            $(".data-loader").removeClass("active");
             $("#data-link").attr("href", "../lib/php/" + data[1]);
             $("#data-ready").slideDown(500);
 //            $("#data-ready").html('<button class="data-ready big ui icon button orange"' +
