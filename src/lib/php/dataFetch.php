@@ -1,17 +1,25 @@
 <?php
 
-/*
+#-------------------------------------------------------
+# This code uses zip, curl and xml php libraries and a python 
+# subprocess to retrieve data from the Agriculture Canada data 
+# server ulysses.agr.gc.ca. Data is saved as a zip to daedalus.agr.gc 
+# and downloaded from there by the user. Specific data heirarchy 
+# is assumed. Script returns fail message, or .zip link.
+# Zip function from davidwalse.name/create-zip-php
 
-PHP script for inclusion with the Web Map Application prototype. 
-Developed by Andrew Roberts 2017, for Professor X. 
-FirePHP console commands for logging php activity:
-FB::log('Log Message');
-FB::info('Info Message');
-FB::warn('Warn Message');
-FB::error('Error Message');
-FB::trace('Simple Trace');
+# Created for inclusion with the Data Portal prototype. 
+# Author: Andrew Roberts 
+# Modified: 2017-04-27
 
-*/
+# FirePHP console commands for logging php activity:
+# FB::log('Log Message');
+# FB::info('Info Message');
+# FB::warn('Warn Message');
+# FB::error('Error Message');
+# FB::trace('Simple Trace');
+#-------------------------------------------------------
+
 
 // Include the FirePHP debugging script
 require('../../lib/fb/fb.php');
@@ -128,9 +136,72 @@ function createZip($files = array(), $destination = '', $metadata = '', $overwri
 }
 
 
+function dataFetch($url, $extent, $extentData, $zipname, $metaDoc, $msg, $layers) {
+    // var
+    $filepathArray = array();
+    // check to see if server's alive
+    if (ping($url) == "alive") {       
+        // open metadata document
+        file_put_contents($metaDoc, $msg);   
+
+        // loop through passed in layer array
+        foreach ($layers as $layer) {
+
+            // fetch data from geoserver, catch filename response
+            $filepath = curlPostGeoServer($layer, $extentData);
+
+            // check for geoserver processing success, delete metedata doc if failed
+            if (strpos($filepath, "fail") !== false || file_exists($filepath) == false) {
+                unlink($metaDoc);
+                return("fail : geoserver process error, check error log");
+            } 
+            else 
+            {
+                // execute metadata script in python, catch result
+                $result = shell_exec("python3 ../py/createMetaData.py $extent $filepath"); 
+
+                // check for python run success, delete metadata doc if failed 
+                if (strpos($result, "fail") !== false) {
+                    unlink($metaDoc);
+                    return($result);
+                }
+                else
+                {
+                    $filepathArray[] = $filepath;
+                }
+            }
+        }
+
+        // do that zip shit here then send success msg to html    
+        $result = createZip($filepathArray, $zipname, $metaDoc);
+
+        if ($result == true) {
+            // clean up the folder after zipping..
+            foreach($filepathArray as $file) {
+                $file = substr($file, 7);
+                $xml = $file . ".aux.xml";
+                unlink($file);
+                unlink($xml);
+            }
+            unlink($metaDoc);
+            return("success");
+        }
+        else
+        {
+            return("fail : zip archive unsuccessful");
+        }
+    } 
+    else 
+    {
+        // send server down error
+        return("fail : " . $url . " is down");
+    }
+}
+
+
 // setup some variables
-$filepathArray = array();
 $extent = implode(",", $extentData);
+$zipname = "temp/soildata_" . date("THis") . ".zip";
 $metaDoc = "temp/metadata.txt";
 $url = "ulysses.agr.gc.ca";
 $msg = "METADATA DOCUMENT\n" . 
@@ -140,63 +211,9 @@ $msg = "METADATA DOCUMENT\n" .
        "\n Data provided by Agriculture and Agri-Food Canada \n\n\n";
 
 
-// check to see if server's alive
-if (ping($url) == "alive") {       
-    // open metadata document
-    file_put_contents($metaDoc, $msg);   
-    
-    // loop through passed in layer array
-    foreach ($layers as $layer) {
-        
-        // fetch data from geoserver, catch filename response
-        $filepath = curlPostGeoServer($layer, $extentData);
-
-        // check for geoserver processing success, delete metedata doc if failed
-        if (strpos($filepath, "fail") !== false || file_exists($filepath) == false) {
-            delete($metaDoc);
-            return("fail : geoserver process error, check error log");
-        } 
-        else 
-        {
-            // execute metadata script in python, catch result
-            $result = shell_exec("python3 ../py/createMetaData.py $extent $filepath"); 
-            
-            // check for python run success, delete metadata doc if failed 
-            if (strpos($result, "fail") !== false) {
-                delete($metaDoc);
-                return($result);
-            }
-            else
-            {
-                $filepathArray[] = $filepath;
-            }
-        }
-    }
-    
-    // do that zip shit here then send success msg to html
-    $zipname = "temp/soildata_" . date("THis") . ".zip";
-    $result = createZip($filepathArray, $zipname, $metaDoc);
-    
-    // clean up the folder after zipping..
-    foreach($filepathArray as $file) {
-        $file = substr($file, 7);
-        $xml = $file . ".aux.xml";
-        unlink($file);
-        unlink($xml);
-    }
-    unlink($metaDoc);
-    fb::log($result);
-    fb::log($filepathArray);
-} 
-else 
-{
-    // send server down error
-    fb::log("ping dead");
-}
-
-
-
-fb::log(json_encode(array($selectType, $extentData, $layers, $func)));
+// execute the script, catch the response, send it to the client
+$result = dataFetch($url, $extent, $extentData, $zipname, $metaDoc, $msg, $layers);
+echo json_encode(array($result));
 
 
 
