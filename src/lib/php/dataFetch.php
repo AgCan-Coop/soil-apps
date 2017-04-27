@@ -23,29 +23,32 @@ $extentData = $_REQUEST["extentData"];
 $layers = $_REQUEST["layers"];
 
 
+/* pings server to check for status */
 function ping($url) {
     $pingResult = exec("ping -c 1 $url", $outcome, $status);
     if (0 == $status) {
         return("alive");
-    } else {
+    } 
+    else 
+    {
         return("dead");
     }
 }
 
-
+/* fetches subset tif data from ulysses */
 function curlPostGeoServer($layer, $extentData) {
     
     // Setup our GET url for GeoServer
     // Modify this url for specific data server ***
-    //
     $url = 'http://ulysses.agr.gc.ca:8080/geoserver/ows?service=WCS&version=2.0.1&request=GetCoverage&CoverageId=Canada__' . $layer . '&subset=Long('. $extentData[0] . ',' . $extentData[2] . ')&subset=Lat(' . $extentData[1] . ',' . $extentData[3] . ')';
     
-    
+    // setup the curl request and headers
     $ch = curl_init($url); 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml')); curl_setopt($ch, CURLOPT_HEADER, 0); 
     curl_setopt($ch, CURLOPT_GET, 1); 
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0); 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+    // execute the request
     $ch_result = curl_exec($ch);      
     
         
@@ -60,40 +63,133 @@ function curlPostGeoServer($layer, $extentData) {
     // If XMLReader can read(returns TRUE), cURL data was XML and we send an error report 
     if($reader->read()){ 
         // Write error report to error log, including returned XML 
-        $errMsg = "\n\n" . date("Y-m-d H:i:s ") . " ERROR" . $_SERVER["REQUEST_TIME "]
-                  . "\n\t " . __FILE__ . "\n\t Request XML error: POST request returned without a valid GeoTIFF.\n\t Refer to XML for info:\n\t XML Response:\n\t url: {$url}\n\t xml:\n\t {$ch_result} ";
+        $errMsg = "\n\n" . date("Y-m-d H:i:s ") . 
+                  " ERROR" . $_SERVER["REQUEST_TIME "] . "\n\t " . __FILE__ . 
+                  "\n\t Request XML error: POST request returned without a valid GeoTIFF.\n\t" . 
+                  "Refer to XML for info:\n\t XML Response:\n\t url: {$url}\n\t xml:\n\t {$ch_result} ";
         
         file_put_contents("error/errorlog.txt ", $errMsg, FILE_APPEND); 
-        return("fail"); 
+        return("fail : " . $errMsg); 
         
-    } else { 
+    } 
+    else 
+    { 
         // Apply time-stamp to file and save 
         $fileName = "temp/" . $layer . "_" . date("This") . ".tif";         
         file_put_contents($fileName, $ch_result); 
         return("../php/" . $fileName); 
     } 
-//    return($url);    
-} // close curlPostGeoServer()
+}
 
 
-if (ping("ulysses.agr.gc.ca") == "alive") {
-    fb::log("ping alive");
+/* creates a compressed zip file */
+function createZip($files = array(), $destination = '', $metadata = '', $overwrite = false) {
     
-    $extent = implode(",", $extentData);
-    fb::log($extent);
-    foreach ($layers as $layer) {
-        fb::log("file");
-        $file = curlPostGeoServer($layer, $extentData);
-
-        if (strpos($file, "fail") !== false) {
-            // return geoserver fail error, check error log
-            fb::error("strpos fail");
-        } else {
-            fb::log($extent);
-            exec("python3 ../py/createMetaData.py $extent $file");            
+    // if zip already exists and overwrite is false, return false
+    if (file_exists($destination) && !overwrite) { return false; }
+    //vars
+    $valid_files = array();
+    // if files were passed in...
+    if (is_array($files)) {
+        // cycle through each file
+        foreach ($files as $file) {
+            // make sure the file exists
+            if (file_exists($file)) {
+                $valid_files[] = $file;
+            }
         }
     }
-} else {
+    
+    // if files check out...
+    if (count($valid_files)) {
+        // create archive
+        $zip = new ZipArchive();
+        if ($zip->open($destination, $overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+            return false;
+        }
+        // add the files
+        foreach($valid_files as $file) {            
+            $newfile = substr($file, 12);            
+            $zip->addFile($file, $newfile);
+        }
+        if (file_exists($metadata)) {
+            $metasplit = substr($metadata, 5);
+            $zip->addFile($metadata, $metasplit);
+        }
+        // close zip - finished
+        $zip->close();
+        // check file
+        return file_exists($destination);
+    }
+    else
+    {
+        return false;
+    }
+}
+
+
+// setup some variables
+$filepathArray = array();
+$extent = implode(",", $extentData);
+$metaDoc = "temp/metadata.txt";
+$url = "ulysses.agr.gc.ca";
+$msg = "METADATA DOCUMENT\n" . 
+       "Date: " . date("Y-m-d H:i:s") . 
+       "\n Server: " . $url . 
+       "\n Request_Time: " . $_SERVER["REQUEST_TIME"] . 
+       "\n Data provided by Agriculture and Agri-Food Canada \n\n\n";
+
+
+// check to see if server's alive
+if (ping($url) == "alive") {       
+    // open metadata document
+    file_put_contents($metaDoc, $msg);   
+    
+    // loop through passed in layer array
+    foreach ($layers as $layer) {
+        
+        // fetch data from geoserver, catch filename response
+        $filepath = curlPostGeoServer($layer, $extentData);
+
+        // check for geoserver processing success, delete metedata doc if failed
+        if (strpos($filepath, "fail") !== false || file_exists($filepath) == false) {
+            delete($metaDoc);
+            return("fail : geoserver process error, check error log");
+        } 
+        else 
+        {
+            // execute metadata script in python, catch result
+            $result = shell_exec("python3 ../py/createMetaData.py $extent $filepath"); 
+            
+            // check for python run success, delete metadata doc if failed 
+            if (strpos($result, "fail") !== false) {
+                delete($metaDoc);
+                return($result);
+            }
+            else
+            {
+                $filepathArray[] = $filepath;
+            }
+        }
+    }
+    
+    // do that zip shit here then send success msg to html
+    $zipname = "temp/soildata_" . date("THis") . ".zip";
+    $result = createZip($filepathArray, $zipname, $metaDoc);
+    
+    // clean up the folder after zipping..
+    foreach($filepathArray as $file) {
+        $file = substr($file, 7);
+        $xml = $file . ".aux.xml";
+        unlink($file);
+        unlink($xml);
+    }
+    unlink($metaDoc);
+    fb::log($result);
+    fb::log($filepathArray);
+} 
+else 
+{
     // send server down error
     fb::log("ping dead");
 }
