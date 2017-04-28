@@ -1,0 +1,93 @@
+
+
+ 2017-04-24 13:26:15  ERROR 
+	 /var/www/html/tests/src/lib/php/dataFetch.php
+	 Request XML error: POST request returned 
+                  without a valid GeoTIFF.
+	 Refer to XML for info:
+	 XML Response:
+	
+                  url: http://ulysses.agr.gc.ca:8080/geoserver/ows?service=WCS&version=2.0.1&request=GetCoverage&CoverageId=Canada__SNDPPT_M_sl1_250m_ll&subset=Long(-123.06884645749429,-123.06884645749429)&subset=Lat(49.324516070984885,49.49607072121506)
+	 xml:
+	 <ows:ExceptionReport xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0.0" xsi:schemaLocation="http://www.opengis.net/ows/2.0 http://schemas.opengis.net/ows/2.0/owsExceptionReport.xsd">
+  <ows:Exception exceptionCode="InvalidSubsetting" locator="">
+    <ows:ExceptionText>Empty intersection after subsetting
+[]</ows:ExceptionText>
+  </ows:Exception>
+</ows:ExceptionReport>
+ 
+
+ 2017-04-24 13:32:44  ERROR 
+	 /var/www/html/tests/src/lib/php/dataFetch.php
+	 Request XML error: POST request returned without a valid GeoTIFF.
+	 Refer to XML for info:
+	 XML Response:
+	 url: http://ulysses.agr.gc.ca:8080/geoserver/ows?service=WCS&version=2.0.1&request=GetCoverage&CoverageId=Canada__SNDPPT_M_sl1_250m_ll&subset=Long(-123.06884645749429,-123.06884645749429)&subset=Lat(49.324516070984885,49.49607072121506)
+	 xml:
+	 <ows:ExceptionReport xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0.0" xsi:schemaLocation="http://www.opengis.net/ows/2.0 http://schemas.opengis.net/ows/2.0/owsExceptionReport.xsd">
+  <ows:Exception exceptionCode="InvalidSubsetting" locator="">
+    <ows:ExceptionText>Empty intersection after subsetting
+[]</ows:ExceptionText>
+  </ows:Exception>
+</ows:ExceptionReport>
+ 
+
+ <0830Mon, 24 Apr 2017 13:36:08 -0400201741>2017-04-24 13:36:08  ERROR</strong> 
+	 /var/www/html/tests/src/lib/php/dataFetch.php
+	 Request XML error: POST request returned without a valid GeoTIFF.
+	 Refer to XML for info:
+	 XML Response:
+	 url: http://ulysses.agr.gc.ca:8080/geoserver/ows?service=WCS&version=2.0.1&request=GetCoverage&CoverageId=Canada__SNDPPT_M_sl1_250m_ll&subset=Long(-123.06884645749429,-123.06884645749429)&subset=Lat(49.324516070984885,49.49607072121506)
+	 xml:
+	 <ows:ExceptionReport xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0.0" xsi:schemaLocation="http://www.opengis.net/ows/2.0 http://schemas.opengis.net/ows/2.0/owsExceptionReport.xsd">
+  <ows:Exception exceptionCode="InvalidSubsetting" locator="">
+    <ows:ExceptionText>Empty intersection after subsetting
+[]</ows:ExceptionText>
+  </ows:Exception>
+</ows:ExceptionReport>
+ 
+
+ <strong>2017-04-24 13:36:34  ERROR</strong> 
+	 /var/www/html/tests/src/lib/php/dataFetch.php
+	 Request XML error: POST request returned without a valid GeoTIFF.
+	 Refer to XML for info:
+	 XML Response:
+	 url: http://ulysses.agr.gc.ca:8080/geoserver/ows?service=WCS&version=2.0.1&request=GetCoverage&CoverageId=Canada__SNDPPT_M_sl1_250m_ll&subset=Long(-123.06884645749429,-123.06884645749429)&subset=Lat(49.324516070984885,49.49607072121506)
+	 xml:
+	 <ows:ExceptionReport xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0.0" xsi:schemaLocation="http://www.opengis.net/ows/2.0 http://schemas.opengis.net/ows/2.0/owsExceptionReport.xsd">
+  <ows:Exception exceptionCode="InvalidSubsetting" locator="">
+    <ows:ExceptionText>Empty intersection after subsetting
+[]</ows:ExceptionText>
+  </ows:Exception>
+</ows:ExceptionReport>
+ 
+
+ <b>2017-04-24 13:37:28  ERROR</b> 
+	 /var/www/html/tests/src/lib/php/dataFetch.php
+	 Request XML error: POST request returned without a valid GeoTIFF.
+	 Refer to XML for info:
+	 XML Response:
+	 url: http://ulysses.agr.gc.ca:8080/geoserver/ows?service=WCS&version=2.0.1&request=GetCoverage&CoverageId=Canada__SNDPPT_M_sl1_250m_ll&subset=Long(-123.06884645749429,-123.06884645749429)&subset=Lat(49.324516070984885,49.49607072121506)
+	 xml:
+	 <ows:ExceptionReport xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0.0" xsi:schemaLocation="http://www.opengis.net/ows/2.0 http://schemas.opengis.net/ows/2.0/owsExceptionReport.xsd">
+  <ows:Exception exceptionCode="InvalidSubsetting" locator="">
+    <ows:ExceptionText>Empty intersection after subsetting
+[]</ows:ExceptionText>
+  </ows:Exception>
+</ows:ExceptionReport>
+ 
+
+2017-04-24 14:02:44  ERROR
+	 /var/www/html/tests/src/lib/php/dataFetch.php
+	 Request XML error: POST request returned without a valid GeoTIFF.
+	 Refer to XML for info:
+	 XML Response:
+	 url: http://ulysses.agr.gc.ca:8080/geoserver/ows?service=WCS&version=2.0.1&request=GetCoverage&CoverageId=Canada__SNDPPT_M_sl1_250m_ll&subset=Long(-123.06884645749429,-123.06884645749429)&subset=Lat(49.324516070984885,49.49607072121506)
+	 xml:
+	 <ows:ExceptionReport xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0.0" xsi:schemaLocation="http://www.opengis.net/ows/2.0 http://schemas.opengis.net/ows/2.0/owsExceptionReport.xsd">
+  <ows:Exception exceptionCode="InvalidSubsetting" locator="">
+    <ows:ExceptionText>Empty intersection after subsetting
+[]</ows:ExceptionText>
+  </ows:Exception>
+</ows:ExceptionReport>
+ 
