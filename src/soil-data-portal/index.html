@@ -219,8 +219,9 @@
                     <span class="title-main">Select an area from your shapefile</span>
                     <div class="ui segment">
                         <p>Upload your own zipped shapefile and select an area based off the full extent, or from selected points or polygons in your file. <b>Zip must contain .shp and .dbf files.</b></p>
+                        <p>Select an individual feature with single click, or hold ctrl and drag to select multiple features at once.<b> Single Point features are not accepted</b></p>
                     </div>
-                    <div class="ui form segment">
+                    <div class="shapefile-form ui form warning segment">
                         <div class="field">
                             <div id="zipfile" class="ui pink fluid labeled icon button upload" data-content="Mandatory files: SHP, DBF" data-variation="inverted small">
                                 Upload zip file
@@ -243,9 +244,16 @@
                                 </div>
                             </div>    
                         </div>
+                        <div class="shape-warning ui warning tiny message hidden">
+                                <i class="close icon"></i>
+                                <div class="header">There are no features on this layer!</div>
+                                <ui class="list">
+                                    <li>Please reload your shapefile with preview, or check that it includes features.</li>
+                                </ui>                                    
+                        </div>
                         <div class="form-buttons two fields">
                             <div class="field">
-                                <div id="download-shapefile" class="ui blue fluid labeled icon disabled button">
+                                <div id="download-shapefile" class="download-shapefile ui blue fluid labeled icon disabled button">
                                     Download Data
                                     <i class="download icon"></i>
                                 </div>
@@ -261,7 +269,8 @@
                 </div>
             </div>
 
-            <!-- Data Download -->
+<!--
+             Data Download 
             <div id="download-data-panel" class="info-panel">
                 <div class="sidebar-panel-heading">
                     <h4 class="sidebar-panel-title">
@@ -273,6 +282,7 @@
                     <p id="border-test">info goes in here as well</p>
                 </div>
             </div>
+-->
 
             <!-- Help and Support -->
             <div id="help-panel" class="info-panel">

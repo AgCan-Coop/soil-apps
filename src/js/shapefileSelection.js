@@ -31,6 +31,43 @@ dragBox.on('boxstart', function() {
     shapefileSelected.clear();
 })       
 
+
+// Get extent shapefile upload, or for selected features from the shapefile
+function getShapefileExtent() {
+    // Check if features are loaded
+    if (shapefileLayer.getSource().getFeatures() < 1) {
+        return("none");
+    }
+    else 
+    {
+        // fetch array of selected features
+        var newExtent,
+            extent,
+            shapearray = shapefileSelect.getFeatures().getArray();
+        // if array isn't empty, get extent of those features
+        if ( shapearray.length > 0) { 
+            // create empty extent to loop into
+            extent = ol.extent.createEmpty();   
+            // in a loop on the feature array, extend the extent
+            shapearray.forEach( function(feature) {
+                ol.extent.extend(extent, feature.getGeometry().getExtent());            
+            });           
+        }
+        // if array is empty, get the extent of the shapefile
+        else
+        {
+            extent = shapefileLayer.getSource().getExtent();       
+        }
+        newExtent = ol.proj.transformExtent([extent[0], 
+                                             extent[1], 
+                                             extent[2], 
+                                             extent[3]], 
+                                             'EPSG:3857', 'EPSG:4326');
+        return(newExtent); 
+    }
+};
+
+
 // A series of select console log checks
 //        select.on('select', function(e) {
 //            console.log("1" + e.target.getFeatures());
