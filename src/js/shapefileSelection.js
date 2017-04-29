@@ -24,7 +24,8 @@ dragBox.on('boxend', function() {
     var extent = dragBox.getGeometry().getExtent();
     shapefileSource.forEachFeatureIntersectingExtent(extent, function(feature) {
         shapefileSelected.push(feature);
-    }); 
+    });
+    $("#shape-data-ready").slideUp(500);
 });
 
 dragBox.on('boxstart', function() {
@@ -66,18 +67,3 @@ function getShapefileExtent() {
         return(newExtent); 
     }
 };
-
-
-// A series of select console log checks
-//        select.on('select', function(e) {
-//            console.log("1" + e.target.getFeatures());
-//            console.log(e.target.getFeatures().a);
-//            console.log(e.target.getFeatures());
-//            console.log(e.selected[0]);
-//            console.log(e.selected[0].T);
-//            console.log(e.selected[0].T.geometry.A);
-//            document.getElementById('features').innerHTML = '&nbsp;' +
-//                e.target.getFeatures().getLength() +
-//                ' selected features (last operation selected ' + e.selected.length +
-//                ' and deselected ' + e.deselected.length + ' features)';            
-//        });

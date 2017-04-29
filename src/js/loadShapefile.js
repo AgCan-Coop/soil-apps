@@ -62,6 +62,7 @@ function loadShpZip() {
 
 // Show options and enable preview when user adds zipped file
 $("#file").change(function(evt) {
+    $("#shape-data-ready").slideUp(500);
     file = evt.target.files[0];
     var html = '<div class="field">' +                         
                  '<div id="dataName" class="ui label">' +
@@ -78,6 +79,7 @@ $("#file").change(function(evt) {
 
 // Clear all map features and load users shapefile 
 $( '.preview-shapefile' ).click(function() {
+    $("#shape-data-ready").slideUp(500);
     var dDDown = $('.drawing-dropdown');
     if (dDDown.dropdown('get value') == "None") {
         selectType = dDDown.dropdown('get value');
@@ -90,8 +92,8 @@ $( '.preview-shapefile' ).click(function() {
 });
 
 // close the 'No Features' warning sign on click
-$(".shape-warning").click(function() {
-    $(".shape-warning").addClass('hidden');
+$(".shape-warning, .point-warning").click(function() {
+    $(".shape-warning, .point-warning").addClass('hidden');
 });
 
 
