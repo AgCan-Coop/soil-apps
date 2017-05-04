@@ -74,37 +74,39 @@ $.ajax({
                 });
         }
 
-    // Handle a tallied list of selected files
-    $('.ui.dropdown.multiple').dropdown() 
-                              .change( function() {                        
-                var count,
-                    $list = $('.layer-dropdown').dropdown('get value'),
-                    $lyrList = $('.selected-layers-list');
-        
-                // Drop into two dimentional arrays if present
-                $lyrList.empty().html( function() {
-                    $.each($list, function(index, value){
-                        if ($.isArray(this)) {
-                            $.each(this, function(index, value){
-                                $lyrList.append('<div class="item">' + 
-                                        '<i class="check circle icon"></i>' + 
-                                        '<div class="content">' + value + 
-                                        '</div></div>');
-                            })
-                        } else if (value != "") {
-                             $lyrList.append('<div class="item">' + 
-                                        '<i class="check circle icon"></i>' + 
-                                        '<div class="content">' + value + 
-                                        '</div></div>');  
-                        }   
-                    })
+        // Handle a tallied list of selected files
+        $('.ui.dropdown.multiple').dropdown() 
+                                  .change( function() {                        
+                    var count,
+                        $list = $('.layer-dropdown').dropdown('get value'),
+                        $lyrList = $('.selected-layers-list');
+
+                    // Drop into two dimentional arrays if present
+                    $lyrList.empty().html( function() {
+                        $.each($list, function(index, value){
+                            if ($.isArray(this)) {
+                                $.each(this, function(index, value){
+                                    $lyrList.append('<div class="item">' + 
+                                            '<i class="check circle icon"></i>' + 
+                                            '<div class="content">' + value + 
+                                            '</div></div>');
+                                })
+                            } else if (value != "") {
+                                 $lyrList.append('<div class="item">' + 
+                                            '<i class="check circle icon"></i>' + 
+                                            '<div class="content">' + value + 
+                                            '</div></div>');  
+                            }   
+                        })
+                    });
+                    count = getSelectedLayers().length;
+                    if (count == 1)
+                        $('.download-draw .content').html(count + ' layer');
+                    else    
+                        $('.download-draw .content').html(count + ' layers');
                 });
-                count = getSelectedLayers().length;
-                if (count == 1)
-                    $('.download-draw .content').html(count + ' layer');
-                else    
-                    $('.download-draw .content').html(count + ' layers');
-            }); 
+        // invert the intro modal
+        $(".page-intro").modal('show');
     })        
     // Handle server response failure
     .fail( function(xhr, status){
