@@ -19,7 +19,7 @@ function PostGeoServer_soil($minX,$minY,$maxX,$maxY)
 	
 	// getting WCS data from geoserver usinng url
 	
-	$url_soil = 'http://127.0.0.1:8080/geoserver/ows?service=WCS&version=2.0.1&request=GetCoverage&CoverageId=Canada:canada_clay_250_sl1&subset=Long('.$minX.','.$maxX.')&subset=Lat('.$minY.','.$maxY.')';
+	$url_soil = 'http://ulysses.agr.gc.ca/geoserver/ows?service=WCS&version=2.0.1&request=GetCoverage&CoverageId=Canada:canada_clay_250_sl1&subset=Long('.$minX.','.$maxX.')&subset=Lat('.$minY.','.$maxY.')';
 	// FB::info($url_soil);
 
 

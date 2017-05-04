@@ -9,7 +9,7 @@
 // FB::error('Error message');
 // FB::trace('Simple Trace');
 
-require('../firephp-master/lib/FirePHPCore/fb.php');
+require('../../lib/fb/fb.php');
 
 
 // FB::info(simplexml_load_file("info.xml"));
@@ -44,11 +44,11 @@ function runPython()
 
     // echo $temp;
     $result = shell_exec('python3 ../py/riskcalc.py ' ."'".$temp."'");
-    $result = shell_exec('python3 ../py/raster_calc.py '.'-A /var/www/html/web_gis/src/temp/CropDensity.tif -B /var/www/html/web_gis/src/temp/cropping_history.tif --outfile=/var/www/html/web_gis/src/temp/riskmap1.tif --calc="A+B"');
-    $result = shell_exec('python3 ../py/raster_calc.py '.'-A /var/www/html/web_gis/src/temp/data-download.tif  -B /var/www/html/web_gis/src/temp/riskmap1.tif --outfile=/var/www/html/web_gis/src/temp/riskmap.tif --calc="A+B"');
+    $result = shell_exec('python3 ../py/raster_calc.py '.'-A ../php/temp/CropDensity.tif -B ../php/temp/cropping_history.tif --outfile=../php/temp/riskmap1.tif --calc="A+B"');
+    $result = shell_exec('python3 ../py/raster_calc.py '.'-A ../php/temp/data-download.tif  -B ../php/temp/riskmap1.tif --outfile=../php/temp/riskmap.tif --calc="A+B"');
     FB::info($result);
-    $riskmap_save = "../../riskmap.tif";
-    $riskmap_path = "http://localhost/web_gis/src/temp/riskmap.tif";
+    $riskmap_save = "../php/temp/riskmap.tif";
+    $riskmap_path = "../lib/php/temp/riskmap.tif";
     return ($riskmap_path);
 }
 

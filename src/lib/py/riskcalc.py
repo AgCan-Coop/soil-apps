@@ -14,7 +14,7 @@ import numpy as np
 
 
 
-file1 = "/var/www/html/web_gis/src/temp/data-download.tif"
+file1 = "../php/temp/data-download.tif"
 
 #Open dataset
 bandNum = 1
@@ -43,7 +43,7 @@ data2.fill(10)
 
 # Write to the out file
 driver = gdal.GetDriverByName("GTiff")
-disOut = driver.Create("/var/www/html/web_gis/src/temp/CropDensity.tif", dis1.RasterXSize, dis1.RasterYSize, 1, band1.DataType)
+disOut = driver.Create("../php/temp/CropDensity.tif", dis1.RasterXSize, dis1.RasterYSize, 1, band1.DataType)
 disOut.SetGeoTransform(dis1.GetGeoTransform())
 disOut.SetProjection(dis1.GetProjection())                #set up the cell size and projection
 CopyDatasetInfo = (dis1, disOut)   

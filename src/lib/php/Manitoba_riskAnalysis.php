@@ -9,7 +9,7 @@
 // FB::error('Error message');
 // FB::trace('Simple Trace');
 
-require('../firephp-master/lib/FirePHPCore/fb.php');
+require('../../lib/fb/fb.php');
 
 
 // FB::info(simplexml_load_file("info.xml"));
