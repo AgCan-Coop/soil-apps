@@ -19,6 +19,7 @@ var shapeStyle = new ol.style.Style ({
     })
 });
 
+
 // Define new source for new layer
 var shapefileSource = new ol.source.Vector({
     wrapX: false 
@@ -31,6 +32,7 @@ var shapefileLayer = new ol.layer.Vector({
     style: shapeStyle
 })
 map.addLayer(shapefileLayer);
+
 
 // Add users shapefile upload
 var file;
@@ -52,12 +54,15 @@ function loadShpZip() {
         shapefileLayer.set('name', file.name);
 
         var extent = shapefileLayer.getSource().getExtent();
-        map.getView().fit(extent, map.getSize());        
+        map.getView().fit(extent, map.getSize());
+        $('#download-shapefile').removeClass('disabled');
     });          
 };         
 
+
 // Show options and enable preview when user adds zipped file
 $("#file").change(function(evt) {
+    $("#shape-data-ready").slideUp(500);
     file = evt.target.files[0];
     var html = '<div class="field">' +                         
                  '<div id="dataName" class="ui label">' +
@@ -71,8 +76,10 @@ $("#file").change(function(evt) {
     }            
 });
 
+
 // Clear all map features and load users shapefile 
-$( '.preview-shapefile' ).click(function () {
+$( '.preview-shapefile' ).click(function() {
+    $("#shape-data-ready").slideUp(500);
     var dDDown = $('.drawing-dropdown');
     if (dDDown.dropdown('get value') == "None") {
         selectType = dDDown.dropdown('get value');
@@ -81,12 +88,13 @@ $( '.preview-shapefile' ).click(function () {
     } else {
         dDDown.dropdown('set selected', "None");
     }
-    if (loadShpZip())
-        console.log("success");
-    else
-        console.log("failed");
+    loadShpZip();
 });
 
+// close the 'No Features' warning sign on click
+$(".shape-warning, .point-warning").click(function() {
+    $(".shape-warning, .point-warning").addClass('hidden');
+});
 
 
 

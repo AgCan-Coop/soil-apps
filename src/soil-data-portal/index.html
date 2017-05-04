@@ -3,6 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="Agrilculture Canada - Soil Data Portal">
+    <meta name="author" content="Andrew Roberts">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>AgCan Soils Portal</title>
     <link rel="icon" type="image/png" href="../img/fav/favicon-32x32.png" sizes="32x32" />
 
@@ -33,7 +37,7 @@
             <button id="layer-options" class="open-panel ui button" data-content="Layer options" data-variation="mini inverted" data-position="left center"><i class="list layout icon"></i></button>
             <button id="drawing-tools" class="open-panel ui button" data-content="Drawing tools" data-variation="mini inverted" data-position="left center"><i class="edit icon"></i></button>
             <button id="upload-shapefile" class="open-panel ui button" data-content="Upload shapefile" data-variation="mini inverted" data-position="left center"><i class="upload icon"></i></button>
-            <button id="download-data" class="open-panel ui button" data-content="Download data" data-variation="mini inverted" data-position="left center"><i class="download icon"></i></button>
+<!--            <button id="download-data" class="open-panel ui button" data-content="Download data" data-variation="mini inverted" data-position="left center"><i class="download icon"></i></button>-->
             <button id="help" class="open-panel ui button" data-content="Help" data-variation="mini inverted" data-position="left center"><i class="help circle icon"></i></button>
         </div>
         <div class="sidemenu-bottom ui fixed large black vertical icon buttons">
@@ -186,6 +190,13 @@
                         </form>
                     </div> 
                     <div class="ui container">
+                         <div class="draw-point-warning ui warning tiny message hidden">
+                                <i class="close icon"></i>
+                                <div class="header">Single points are not accepted!</div>
+                                <ui class="list">
+                                    <li>Please draw another shape to select your area of interest.</li>
+                                </ui>                                    
+                        </div>
                         <div class="row">
                             <div id="download-draw" class="download-draw ui labeled button disabled" tabindex="0">
                                 <div class="ui black button">
@@ -219,8 +230,9 @@
                     <span class="title-main">Select an area from your shapefile</span>
                     <div class="ui segment">
                         <p>Upload your own zipped shapefile and select an area based off the full extent, or from selected points or polygons in your file. <b>Zip must contain .shp and .dbf files.</b></p>
+                        <p>Select an individual feature with single click, or hold ctrl and drag to select multiple features at once.<b> Single Point features are not accepted</b></p>
                     </div>
-                    <div class="ui form segment">
+                    <div class="shapefile-form ui form warning segment">
                         <div class="field">
                             <div id="zipfile" class="ui pink fluid labeled icon button upload" data-content="Mandatory files: SHP, DBF" data-variation="inverted small">
                                 Upload zip file
@@ -243,9 +255,23 @@
                                 </div>
                             </div>    
                         </div>
+                        <div class="shape-warning ui warning tiny message hidden">
+                                <i class="close icon"></i>
+                                <div class="header">There are no features on this layer!</div>
+                                <ui class="list">
+                                    <li>Please reload your shapefile with preview, or check that it includes features.</li>
+                                </ui>                                    
+                        </div>
+                        <div class="point-warning ui warning tiny message hidden">
+                                <i class="close icon"></i>
+                                <div class="header">Single points are not accepted!</div>
+                                <ui class="list">
+                                    <li>Please use crtl + drag to select multiple points.</li>
+                                </ui>                                    
+                        </div>
                         <div class="form-buttons two fields">
                             <div class="field">
-                                <div id="download-shapefile" class="ui blue fluid labeled icon disabled button">
+                                <div id="download-shapefile" class="download-shapefile ui blue fluid labeled icon disabled button">
                                     Download Data
                                     <i class="download icon"></i>
                                 </div>
@@ -257,20 +283,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="shape-data-ready" class="hidden field">
+                            <a id="shape-data-link" href="" target="_blank">
+                                <button class="data-ready large ui icon orange button" href="">
+                                    <i class="arrow circle outline down icon"></i>Ready
+                                </button>
+                            </a>                          
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Data Download -->
-            <div id="download-data-panel" class="info-panel">
-                <div class="sidebar-panel-heading">
-                    <h4 class="sidebar-panel-title">
-                        <span>Download some data here</span>
-                    </h4>
-                    <span class="sidebar-panel-icon"><i class="remove icon"></i></span>
-                </div>
-                <div class="sidebar-panel-body">
-                    <p id="border-test">info goes in here as well</p>
                 </div>
             </div>
 
@@ -293,6 +313,41 @@
     </div>
 
     <div class="map pusher">
+        
+        <div class="page-intro ui modal">            
+            <div class="header">
+                AAFC Soil Data Portal
+            </div>
+            <div class="content">
+                <p>Select and download Canada wide AAFC soil data</p>
+                <div class="ui steps">
+                    <div class="step">
+                        <i class="database icon"></i> 
+                        <div class="content">
+                            <div class="title">Layers</div>
+                            <div class="description">Choose your soil layers</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="crop icon"></i> 
+                        <div class="content">
+                            <div class="title">AOI</div>
+                            <div class="description">Select your Area of Interest</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="cloud download icon"></i> 
+                        <div class="content">
+                            <div class="title">Download</div>
+                            <div class="description">Download your .zip data</div>
+                        </div>
+                    </div>
+                </div>
+                <p>Data sourced from <a href="https://www.soilgrids.org/" target="_blank">SoilGrids.org</a>. For more information on this project or the data, please contact xiaoyuan.geng@agr.gc.ca</p>
+                <p>Also, you can find this us on github, <a href="https://github.com/AgCan-Coop/soil-apps" target="_blank">here</a>.</p>                
+            </div>
+        </div>
+        
         <div class="count-many ui basic modal">
             <div class="ui icon header">                
             </div>
@@ -326,7 +381,7 @@
         
         <div class="data-loader ui inverted dimmer">
             <div class="ui large text loader">Preparing files, this can take a few moments</div>
-        </div>
+        </div> 
         
         <div id="map" class="map"></div>
     </div>
@@ -396,9 +451,7 @@
             target: 'map',
             view: view
         });
-        
-        
-                   
+                           
    
         
        

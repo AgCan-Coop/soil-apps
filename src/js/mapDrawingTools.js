@@ -67,6 +67,7 @@ function addInteraction() {
             lastFeature = e.feature;
             displayDrawingExtent();
             clearBBoxErrors();
+            $("#data-ready").slideUp(500);
         });
 
         // Finally, add the draw interaction to the map

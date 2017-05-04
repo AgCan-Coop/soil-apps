@@ -88,18 +88,21 @@ $('#zoom-out').click(function () {
 
 
 // Create modal on layer count warning
-$('.count-many .ui.basic.modal').modal({
+$('.count-many').modal({
     closable  : false,
-//    inverted  : true,
     onApprove : function(e) {
         getGeoTiffs(e);
     }
 });
 
+
 // Create modal on layer count warning
-$('.count-zero .ui.basic.modal').modal({
+$('.count-zero').modal({
     closable  : false
 });
+
+
+
 
 
 
