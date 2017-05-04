@@ -1,4 +1,14 @@
-/****************************  Fetch GeoTiffs from Drawing AOI  ***********************/
+/* 
+
+ This code sends a user selected AOI to a php script and 
+ returns a download button to the location of the users
+ zipped data.
+
+ Created for inclusion with the Data Portal prototype. 
+ Author: Andrew Roberts 
+ Modified: 2017-04-27
+
+*/
 
 
 // Fetch list of currently selected layers for download
@@ -135,23 +145,3 @@ $('.download-draw, .download-shapefile').click(function(e) {
 $(".draw-point-warning").click(function(){    
     $(".draw-point-warning").addClass('hidden');
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

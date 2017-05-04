@@ -1,6 +1,15 @@
-/****************************  Add Map Drawing Tools      *****************************/
+/* 
 
-       
+ This code provides the drawing functionality for the
+ web map. All documentation can be found in the 
+ OpenLayers API.
+
+ Created for inclusion with the Data Portal prototype. 
+ Author: Andrew Roberts 
+ Modified: 2017-04-27
+
+*/
+
 
 // Setup some globals and fetch the selected draw tool
 var draw, lastFeature, drawCoords = null,
@@ -149,27 +158,3 @@ function displayDrawingExtent() {
         $('#feature-extent').html(html).slideDown(500);        
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

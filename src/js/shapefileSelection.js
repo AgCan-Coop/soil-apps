@@ -1,4 +1,14 @@
-/****************************  Add shapefile selection interaction ********************/
+/* 
+
+ This code adds OpenLayers interactions to any uploaded
+ shapefiles. The selection interaction is written on a
+ seperate ol.Layer than the users drawings.
+
+ Created for inclusion with the Data Portal prototype. 
+ Author: Andrew Roberts 
+ Modified: 2017-04-27
+
+*/
 
 
 // Create select interaction for shapefile uploads

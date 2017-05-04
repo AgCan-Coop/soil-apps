@@ -1,4 +1,16 @@
- /****************************  Add user defined bbox draw *****************************/
+/* 
+
+ This code receives and verifies user inputs for the
+ bounding box drawing option. If all data is correct
+ and no errors are raise, the code will add a polygon
+ the map representing this bounding box.
+
+ Created for inclusion with the Data Portal prototype. 
+ Author: Andrew Roberts 
+ Modified: 2017-04-27
+
+*/ 
+
         
 // Set this out for later use
 var bboxCoords;

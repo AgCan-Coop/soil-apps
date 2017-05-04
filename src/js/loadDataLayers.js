@@ -1,4 +1,16 @@
-/****************************  Load Available data layers *****************************/
+/* 
+
+ This code uses GeoServer's REST interface to collect the
+ available layer-groups, then parses that information for 
+ specific layers, fetching layer descriptions with another 
+ REST call. This code relies heavily on the correct formatting
+ of data loaded onto GeoServer.
+
+ Created for inclusion with the Data Portal prototype. 
+ Author: Andrew Roberts 
+ Modified: 2017-04-27
+
+*/
 
 
 // REST URL of data server 

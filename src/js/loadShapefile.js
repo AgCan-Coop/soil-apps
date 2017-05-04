@@ -1,4 +1,17 @@
- /****************************  Add some shapefile spice   *****************************/
+/* 
+
+ This code utilizes the Shp2Geojson.js library to allow
+ shapefile uploads directly into openlayers. It does this
+ by reading the uploaded zip and converting the data into
+ geojson, which is then loaded onto a shapefile layer on 
+ the map.
+
+ Created for inclusion with the Data Portal prototype. 
+ Author: Andrew Roberts 
+ Modified: 2017-04-27
+
+*/ 
+
     
 // New style for the shapefile uploads
 var shapeStyle = new ol.style.Style ({
@@ -95,7 +108,3 @@ $( '.preview-shapefile' ).click(function() {
 $(".shape-warning, .point-warning").click(function() {
     $(".shape-warning, .point-warning").addClass('hidden');
 });
-
-
-
-

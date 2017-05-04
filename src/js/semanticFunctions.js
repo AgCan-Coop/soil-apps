@@ -1,8 +1,16 @@
 
 /* 
 
-Semantic UI dependency code works in conjunction with class definitions
-to generate animation and user interaction with classes
+ Semantic UI dependency code works in conjunction with class 
+ definitions to generate animation and user interaction with 
+ classes.
+
+ This code implements all required jQuery calls to Semantic
+ elements in the application.
+
+ Created for inclusion with the Data Portal prototype. 
+ Author: Andrew Roberts 
+ Modified: 2017-04-27
 
 */
 

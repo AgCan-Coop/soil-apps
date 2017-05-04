@@ -1,4 +1,14 @@
- /****************************  Search bar for EPSG codes  *****************************/
+/* 
+
+ This code implements an ESPG code search function for
+ the EPSG search bar. This functionality is found in the
+ OpenLayers API documentation.
+
+ Created for inclusion with the Data Portal prototype. 
+ Author: Andrew Roberts 
+ Modified: 2017-04-27
+
+*/ 
         
         
 function search(query) {
